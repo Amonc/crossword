@@ -87,7 +87,7 @@ class _GamePageState extends State<GamePage> {
     return Scaffold(
         backgroundColor: Colors.black,
         body: Crossword(
-          acceptReversedDirection: false,
+
 
           letters:[
             ["F", "L", "U", "T", "T", "E", "R", "W", "U", "D", "B", "C"],

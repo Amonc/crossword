@@ -36,9 +36,18 @@ To get started add the `Crossword` widget.
 
 ```dart
 Crossword(
-          letters: [
-            ["A", "M"],
-            ["O", "N"]
+          letters: letters:[
+                    ["F", "L", "U", "T", "T", "E", "R", "W", "U", "D", "B", "C"],
+                    ["R", "M", "I", "O", "P", "U", "I", "Q", "R", "L", "E", "G"],
+                    ["T", "V", "D", "I", "R", "I", "M", "U", "A", "H", "E", "A"],
+                    ["D", "A", "R", "T", "N", "S", "T", "O", "Y", "J", "R", "M"],
+                    ["O", "G", "A", "M", "E", "S", "C", "O", "L", "O", "R", "O"],
+                    ["S", "R", "T", "I", "I", "I", "F", "X", "S", "P", "E", "D"],
+                    ["Y", "S", "N", "E", "T", "M", "M", "C", "E", "A", "T", "S"],
+                    ["W", "E", "T", "P", "A", "T", "D", "Y", "L", "M", "N", "U"],
+                    ["O", "T", "E", "H", "R", "O", "G", "P", "T", "U", "O", "E"],
+                    ["K", "R", "R", "C", "G", "A", "M", "E", "S", "S", "T", "S"],
+                    ["S", "E", "S", "T", "L", "A", "O", "P", "U", "P", "E", "S"]
           ],
           spacing: const Offset(30, 30),
           onLineDrawn: (List<String> words) {},
