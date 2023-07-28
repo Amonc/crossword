@@ -11,29 +11,62 @@ and the Flutter guide for
 [developing packages and plugins](https://flutter.dev/developing-packages).
 -->
 
-TODO: Put a short description of the package here that helps potential users
-know whether this package might be useful for them.
+Crossword is a comprehensive solution for seamlessly integrating a crossword puzzle-solving user interface into your Flutter app. With this package, you can effortlessly provide users with an interactive and enjoyable crossword puzzle-solving experience within your application.
 
 ## Features
 
-TODO: List what your package can do. Maybe include images, gifs, or videos.
+- **Customizable Crossword Widget:**
+  The package offers a customizable crossword widget that can be easily integrated into any Flutter app. You can adjust the widget's appearance, size, and layout to match your app's design and theme.
+
+- **User-Friendly Interface:**
+  The user interface is designed with simplicity and ease of use in mind. Users can intuitively navigate through the puzzle, pan, and select the letters to choose words.
+  
+- **Clue Management:**
+  Manage crossword clues effortlessly with this package by passing the list of words into the `Crossword` widget.
 
 ## Getting started
 
-TODO: List prerequisites and provide or point to information on how to
-start using the package.
+## Installation
 
-## Usage
+You just need to add `crossword` as a [dependency in your pubspec.yaml file](https://flutter.io/using-packages/).
 
-TODO: Include short and useful examples for package users. Add longer examples
-to `/example` folder.
-
-```dart
-const like = 'sample';
+```yaml
+dependencies:
+  crossword: ^0.0.1
 ```
 
-## Additional information
+Import the package in your Dart code and instantiate the `Crossword` widget.
 
-TODO: Tell users more about the package: where to find more information, how to
-contribute to the package, how to file issues, what response they can expect
-from the package authors, and more.
+## Example
+
+To get started add the `Crossword` widget. 
+- `letters` : takes all the letters as a two-dimentional `List`
+- `spacing` : controls the `horizontal` and `vertical` spacing in between letters
+- `onLineDrawn` : returns a `List` of words created based on user interactions on the `Crossword panel`
+- `hints` : takes a `List` of words as clues
+
+```dart
+Crossword(
+          letters: [
+            ["A", "M"],
+            ["O", "N"]
+          ],
+          spacing: const Offset(30, 30),
+          onLineDrawn: (List<String> words) {},
+          hints: const ["Flutter", "Dart", "Games", "Colors"],
+        )
+```
+
+## Additional parameters
+- `acceptReversedDirection`: accepts a `bool` to identify while creating the words by touching in the reversed direction, is enabled or not
+- `drawCrossLine`:  accepts a `bool`, and identifies if the user can interact in the `Cross` direction or not.
+- `drawVerticalLine`:  accepts a `bool`, and identifies if the user can interact in the `Vertical` direction or not. 
+- `drawHorizontalLine`: accepts a `bool`, and identifies if the user can interact in the `Horizontal` direction or not.
+  
+> `drawCrossLine`, `drawVerticalLine`, `drawHorizontalLine` can't be set as `false` altogether.
+
+- `lineDecoration`: Decorate lines to update colors based on the input and clues
+- `textStyle`: Add styles to the crossword letters
+
+
+
