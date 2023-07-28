@@ -1,17 +1,5 @@
-<!--
-This README describes the package. If you publish this package to pub.dev,
-this README's contents appear on the landing page for your package.
-
-For information about how to write a good package README, see the guide for
-[writing package pages](https://dart.dev/guides/libraries/writing-package-pages).
-
-For general information about developing packages, see the Dart guide for
-[creating packages](https://dart.dev/guides/libraries/create-library-packages)
-and the Flutter guide for
-[developing packages and plugins](https://flutter.dev/developing-packages).
--->
-
-Crossword is a comprehensive solution for seamlessly integrating a crossword puzzle-solving user interface into your Flutter app. With this package, you can effortlessly provide users with an interactive and enjoyable crossword puzzle-solving experience within your application.
+`Crossword` is a comprehensive solution for seamlessly integrating a crossword puzzle-solving user interface into your Flutter app. With this package, you can effortlessly provide users with an interactive and enjoyable crossword puzzle-solving experience within your application.
+<img src="https://github.com/Amonc/crossword/assets/23643271/a2abcac4-2540-4e46-b398-366265c5fbc2" width="270">
 
 ## Features
 
