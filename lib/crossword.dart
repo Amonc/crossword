@@ -32,7 +32,7 @@ class Crossword extends StatefulWidget {
       required this.hints,
       this.lineDecoration = const LineDecoration(),
       this.textStyle,
-      this.acceptReversedDirection})
+      this.acceptReversedDirection=false})
       : assert(
           (drawCrossLine ?? true) ||
               (drawHorizontalLine ?? true) ||
