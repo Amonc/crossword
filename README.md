@@ -1,4 +1,5 @@
 `Crossword` is a comprehensive solution for seamlessly integrating a crossword puzzle-solving user interface into your Flutter app. With this package, you can effortlessly provide users with an interactive and enjoyable crossword puzzle-solving experience within your application.
+
 <img src="https://github.com/Amonc/crossword/assets/23643271/a2abcac4-2540-4e46-b398-366265c5fbc2" width="270">
 
 ## Features
