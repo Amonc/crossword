@@ -1,3 +1,20 @@
+ <br>
+<p align="center">
+<img alt="GitHub commit activity" src="https://img.shields.io/github/commit-activity/m/anasfik/openai">
+<img alt="GitHub contributors" src="https://img.shields.io/github/contributors/anasfik/openai">
+<img alt="GitHub Repo stars" src="https://img.shields.io/github/stars/anasfik/openai?style=social">
+<img alt="GitHub Workflow Status" src="https://img.shields.io/github/actions/workflow/status/anasfik/openai/dart.yml?label=tests">
+<img alt="GitHub Workflow Status" src="https://img.shields.io/github/actions/workflow/status/anasfik/openai/release.yml?label=build">
+<img alt="GitHub" src="https://img.shields.io/github/license/anasfik/openai">
+<img alt="Pub Version" src="https://img.shields.io/pub/v/dart_openai">
+<img alt="Pub Likes" src="https://img.shields.io/pub/likes/dart_openai">
+<img alt="Pub Points" src="https://img.shields.io/pub/points/dart_openai">
+<img alt="Pub Popularity" src="https://img.shields.io/pub/popularity/dart_openai">
+
+</p>
+
+</br>
+
 `Crossword` is a comprehensive solution for seamlessly integrating a crossword puzzle-solving user interface into your Flutter app. With this package, you can effortlessly provide users with an interactive and enjoyable crossword puzzle-solving experience within your application.
 
 <img src="https://github.com/Amonc/crossword/assets/23643271/a2abcac4-2540-4e46-b398-366265c5fbc2" width="270">
