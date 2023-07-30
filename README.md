@@ -1,6 +1,16 @@
- <br>
+# NEW:  Transpose Matrix feature added
+# Crossword [![pub package](https://img.shields.io/pub/v/crossword.svg)](https://pub.dartlang.org/packages/crossword)
+
+<br>
 <p align="center">
 <img alt="GitHub commit activity" src="https://img.shields.io/github/commit-activity/m/amonc/crossword">
+<img alt="GitHub contributors" src="https://img.shields.io/github/contributors/amonc/crossword">
+<img alt="GitHub Repo stars" src="https://img.shields.io/github/stars/amonc/crossword?style=social">
+<img alt="GitHub" src="https://img.shields.io/github/license/amonc/crossword">
+<img alt="Pub Version" src="https://img.shields.io/pub/v/crossword">
+<img alt="Pub Likes" src="https://img.shields.io/pub/likes/crossword">
+<img alt="Pub Points" src="https://img.shields.io/pub/points/crossword">
+<img alt="Pub Popularity" src="https://img.shields.io/pub/popularity/crossword">
 
 </p>
 
@@ -29,7 +39,7 @@ You just need to add `crossword` as a [dependency in your pubspec.yaml file](htt
 
 ```yaml
 dependencies:
-  crossword: ^0.0.1
+  crossword: ^0.0.3
 ```
 
 Import the package in your Dart code and instantiate the `Crossword` widget.
@@ -73,6 +83,7 @@ Crossword(
 
 - `lineDecoration`: Decorate lines to update colors based on the input and clues
 - `textStyle`: Add styles to the crossword letters
+- `transposeMatrix`: Transpose the 2x2 matrix
 
 
 
