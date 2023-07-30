@@ -29,7 +29,7 @@ You just need to add `crossword` as a [dependency in your pubspec.yaml file](htt
 
 ```yaml
 dependencies:
-  crossword: ^0.0.1
+  crossword: ^0.0.3
 ```
 
 Import the package in your Dart code and instantiate the `Crossword` widget.
@@ -73,6 +73,7 @@ Crossword(
 
 - `lineDecoration`: Decorate lines to update colors based on the input and clues
 - `textStyle`: Add styles to the crossword letters
+- `transposeMatrix`: Transpose the 2x2 matrix
 
 
 
