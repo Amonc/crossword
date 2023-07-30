@@ -1,5 +1,3 @@
-
-
 import 'package:crossword/components/letter_offset.dart';
 import 'package:flutter/cupertino.dart';
 
@@ -18,6 +16,7 @@ class WordLine extends ChangeNotifier {
       required this.letters,
       this.acceptReversedDirection = false});
 
+  //get all the offsets that fell in a drawn line
   List<Offset> get getTotalOffsets {
     Offset firstOffset = offsets.first.getSmallerOffset;
     Offset lastOffset = offsets.last.getSmallerOffset;
@@ -25,22 +24,25 @@ class WordLine extends ChangeNotifier {
     if (firstOffset == lastOffset) {
       return [firstOffset, lastOffset];
     } else if (firstOffset.dx == lastOffset.dx) {
+      //xSign indicates the draw direction when the line is horizontal
       xSign = (lastOffset.dy - firstOffset.dy) ~/
-              (firstOffset.dy - lastOffset.dy).abs();
+          (firstOffset.dy - lastOffset.dy).abs();
 
       return List.generate((firstOffset.dy - lastOffset.dy).abs().toInt() + 1,
           (index) => Offset(firstOffset.dx, firstOffset.dy + index * xSign));
     } else if (firstOffset.dy == lastOffset.dy) {
+      //ySign indicates the draw direction when the line is vertical
       ySign = (lastOffset.dx - firstOffset.dx) ~/
-              (firstOffset.dx - lastOffset.dx).abs();
+          (firstOffset.dx - lastOffset.dx).abs();
       return List.generate((firstOffset.dx - lastOffset.dx).abs().toInt() + 1,
           (index) => Offset(firstOffset.dx + index * ySign, firstOffset.dy));
     } else {
+      //xSign and ySIgn both indicates the draw direction when the line is cross towards 4 corners
       ySign = (lastOffset.dy - firstOffset.dy) ~/
-              (firstOffset.dy - lastOffset.dy).abs();
+          (firstOffset.dy - lastOffset.dy).abs();
 
       xSign = (lastOffset.dx - firstOffset.dx) ~/
-              (firstOffset.dx - lastOffset.dx).abs();
+          (firstOffset.dx - lastOffset.dx).abs();
       return List.generate(
           (firstOffset.dy - lastOffset.dy).abs().toInt() + 1,
           (index) => Offset(
@@ -48,11 +50,13 @@ class WordLine extends ChangeNotifier {
     }
   }
 
+  //set the line color
   set setColor(Color c) {
     color = c;
     notifyListeners();
   }
 
+  //return the Word based on the selected letters
   String get word {
     List<Offset> totalOffsets = getTotalOffsets;
 
@@ -77,7 +81,7 @@ class WordLine extends ChangeNotifier {
         })
         .toList()
         .join();
-
+     //identifies if the line can be drawn on a reversed direction or not.
     if (acceptReversedDirection) {
       return word;
     } else {

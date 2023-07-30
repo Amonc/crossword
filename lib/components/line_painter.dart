@@ -1,8 +1,6 @@
-
 import 'package:crossword/components/line_decoration.dart';
 import 'package:crossword/components/word_line.dart';
 import 'package:flutter/material.dart';
-
 
 class LinePainter extends CustomPainter {
   final List<WordLine> lineList;
@@ -14,37 +12,31 @@ class LinePainter extends CustomPainter {
 
   final LineDecoration? lineDecoration;
 
-  LinePainter(  {
-    this.textStyle= const TextStyle(color: Colors.black, fontSize: 16),
-    this.lineDecoration=const LineDecoration(),
-
+  LinePainter({
+    this.textStyle = const TextStyle(color: Colors.black, fontSize: 16),
+    this.lineDecoration = const LineDecoration(),
     required this.letters,
     required this.lineList,
     required this.spacing,
     required this.hints,
-    this.correctColor=Colors.green,
-
+    this.correctColor = Colors.green,
   });
 
   @override
   void paint(Canvas canvas, Size size) {
     final paint = Paint()
       ..strokeWidth = lineDecoration!.strokeWidth!
-      ..isAntiAlias=true
-      ..strokeCap =lineDecoration!.strokeCap!;
-
+      ..isAntiAlias = true
+      ..strokeCap = lineDecoration!.strokeCap!;
 
     //paint lines on the grid
     for (var points in lineList) {
-
-
-
+      //set the line color
       paint.color = points.color;
 
       for (int i = 0; i < points.offsets.length - 1; i++) {
         canvas.drawLine(points.offsets[i].getBiggerOffset,
             points.offsets[i + 1].getBiggerOffset, paint);
-
       }
     }
 
