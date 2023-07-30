@@ -17,21 +17,6 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       title: 'Crossword Example',
       theme: ThemeData(
-        // This is the theme of your application.
-        //
-        // TRY THIS: Try running your application with "flutter run". You'll see
-        // the application has a blue toolbar. Then, without quitting the app,
-        // try changing the seedColor in the colorScheme below to Colors.green
-        // and then invoke "hot reload" (save your changes or press the "hot
-        // reload" button in a Flutter-supported IDE, or press "r" if you used
-        // the command line to start the app).
-        //
-        // Notice that the counter didn't reset back to zero; the application
-        // state is not lost during the reload. To reset the state, use hot
-        // restart instead.
-        //
-        // This works for code too, not just values: Most code changes can be
-        // tested with just a hot reload.
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
         useMaterial3: true,
       ),
@@ -58,7 +43,7 @@ class _GamePageState extends State<GamePage> {
     const letters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
     List<List<String>> array = List.generate(
         letterGrid.first,
-            (_) => List.generate(
+        (_) => List.generate(
             letterGrid.last, (_) => letters[random.nextInt(letters.length)]));
 
     return array;
@@ -79,7 +64,6 @@ class _GamePageState extends State<GamePage> {
     // TODO: implement initState
     super.initState();
     lineColors = List.generate(100, (index) => generateRandomColor()).toList();
-
   }
 
   @override
@@ -88,8 +72,7 @@ class _GamePageState extends State<GamePage> {
         backgroundColor: Colors.black,
         body: Crossword(
 
-
-          letters:[
+          letters: const [
             ["F", "L", "U", "T", "T", "E", "R", "W", "U", "D", "B", "C"],
             ["R", "M", "I", "O", "P", "U", "I", "Q", "R", "L", "E", "G"],
             ["T", "V", "D", "I", "R", "I", "M", "U", "A", "H", "E", "A"],
@@ -101,15 +84,13 @@ class _GamePageState extends State<GamePage> {
             ["O", "T", "E", "H", "R", "O", "G", "P", "T", "U", "O", "E"],
             ["K", "R", "R", "C", "G", "A", "M", "E", "S", "S", "T", "S"],
             ["S", "E", "S", "T", "L", "A", "O", "P", "U", "P", "E", "S"]
-          ]
-          ,
+          ],
           spacing: const Offset(30, 30),
           onLineDrawn: (List<String> words) {},
           textStyle: const TextStyle(color: Colors.white, fontSize: 20),
           lineDecoration:
               LineDecoration(lineColors: lineColors, strokeWidth: 20),
-          hints: [],
+          hints: const ["FLUTTER", "GAMES", "UI", "COLORS"],
         ));
   }
-
 }
