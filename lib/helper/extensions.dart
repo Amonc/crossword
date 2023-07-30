@@ -2,11 +2,11 @@
 //transpose the 2x2 matrix
 extension TransposeMatrixExtension on List<List<String>> {
   List<List<String>> transpose() {
-    if (this.isEmpty || this[0].isEmpty) {
+    if (isEmpty || this[0].isEmpty) {
       throw ArgumentError("List must not be empty.");
     }
 
-    int rows = this.length;
+    int rows = length;
     int cols = this[0].length;
 
     // Initialize the transposed list with empty lists
