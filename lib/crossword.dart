@@ -61,7 +61,7 @@ class CrosswordState extends State<Crossword> {
   void initState() {
     // TODO: implement initState
     letters =
-        widget.transposeMatrix! ? widget.letters.transpose() : widget.letters;
+    widget.transposeMatrix! ?widget.letters: widget.letters.transpose();
     super.initState();
   }
 
