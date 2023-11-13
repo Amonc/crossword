@@ -29,9 +29,9 @@ class LinePainter extends CustomPainter {
       ..isAntiAlias = true
       ..strokeCap = lineDecoration!.strokeCap!;
 
-    //paint lines on the grid
+    ///paint lines on the grid
     for (var points in lineList) {
-      //set the line color
+      ///set the line color
       paint.color = points.color;
 
       for (int i = 0; i < points.offsets.length - 1; i++) {
@@ -40,13 +40,13 @@ class LinePainter extends CustomPainter {
       }
     }
 
-    //paint texts on the grid
+    ///paint texts on the grid
     for (int i = 0; i < letters.length; i++) {
       for (int j = 0; j < letters.first.length; j++) {
         double x = i.toDouble() * spacing.dx + spacing.dx / 2;
         double y = j.toDouble() * spacing.dy + spacing.dy / 2;
 
-        // Draw letters
+        /// Draw letters
         TextPainter painter = TextPainter(
           text: TextSpan(
             text: letters[i][j],

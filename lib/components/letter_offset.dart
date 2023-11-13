@@ -9,13 +9,13 @@ class LetterOffset {
     required this.spacing,
   });
 
-  //get the smaller converted offsets ex:(0,0.. 0,1)
+  ///get the smaller converted offsets ex:(0,0.. 0,1)
   Offset get getSmallerOffset {
     return Offset((offset.dx ~/ spacing.dx).toDouble(),
         (offset.dy ~/ spacing.dy).toDouble());
   }
 
-  //get the bigger offsets by filtering the spacing horizontally and vertically ex:(0,0..0,30) when spacing set to 30
+  ///get the bigger offsets by filtering the spacing horizontally and vertically ex:(0,0..0,30) when spacing set to 30
   Offset get getBiggerOffset {
     Offset smallOffset = getSmallerOffset;
 

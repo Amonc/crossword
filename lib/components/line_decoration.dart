@@ -10,10 +10,8 @@ class LineDecoration {
 
   const LineDecoration(
       {this.lineColors = const [Colors.blue],
-
       this.incorrectColor,
-      this.correctColor ,
-      this.strokeWidth= 20,
-        this.strokeCap=StrokeCap.round
-      });
+      this.correctColor,
+      this.strokeWidth = 20,
+      this.strokeCap = StrokeCap.round});
 }

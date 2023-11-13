@@ -10,6 +10,7 @@ import 'package:crossword/helper/extensions.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
+/// Represents a widget for a crossword game board.
 class Crossword extends StatefulWidget {
   final List<List<String>> letters;
   final bool? transposeMatrix;
@@ -47,6 +48,7 @@ class Crossword extends StatefulWidget {
   CrosswordState createState() => CrosswordState();
 }
 
+/// State class for the Crossword widget.
 class CrosswordState extends State<Crossword> {
   List<WordLine> lineList = [];
   List<Offset> selectedOffsets = [];
@@ -59,23 +61,24 @@ class CrosswordState extends State<Crossword> {
 
   @override
   void initState() {
-    // TODO: implement initState
+    /// TODO: implement initState
     letters =
-    widget.transposeMatrix! ?widget.letters: widget.letters.transpose();
+        widget.transposeMatrix! ? widget.letters : widget.letters.transpose();
     super.initState();
   }
 
-   @override
+  @override
   void didUpdateWidget(covariant Crossword oldWidget) {
-    // TODO: implement didUpdateWidget
+    /// TODO: implement didUpdateWidget
     super.didUpdateWidget(oldWidget);
-    letters = widget.transposeMatrix! ?widget.letters: widget.letters.transpose();
+    letters =
+        widget.transposeMatrix! ? widget.letters : widget.letters.transpose();
     lineList = [];
     selectedOffsets = [];
     updatedLineList = [];
   }
 
-  //check whether user interaction on the panel within the letter positions limit or outside the area
+  ///check whether user interaction on the panel within the letter positions limit or outside the area
   bool isWithinLimit(LetterOffset offset) {
     return !(offset.getSmallerOffset.dx < 0 ||
         offset.getSmallerOffset.dx > letters.length - 1 ||
@@ -83,7 +86,7 @@ class CrosswordState extends State<Crossword> {
         offset.getSmallerOffset.dy > letters.first.length - 1);
   }
 
-//check if the drawn line on a horizontal track
+  ///check if the drawn line on a horizontal track
   bool isHorizontalLine(List<LetterOffset> offsets) {
     if (offsets.isEmpty) {
       return false;
@@ -100,7 +103,7 @@ class CrosswordState extends State<Crossword> {
     return true;
   }
 
-  //check if the drawn line on a vertical track
+  ///check if the drawn line on a vertical track
   bool isVerticalLine(List<LetterOffset> offsets) {
     if (offsets.isEmpty) {
       return false;
@@ -117,7 +120,7 @@ class CrosswordState extends State<Crossword> {
     return true;
   }
 
-//check if the drawn line on a 45 degree angled track
+  ///check if the drawn line on a 45 degree angled track
   bool isCrossLine(List<LetterOffset> offsets) {
     if (offsets.isEmpty) {
       return false;
@@ -139,7 +142,7 @@ class CrosswordState extends State<Crossword> {
     return true;
   }
 
-  //generate random colors based on the give line colors
+  ///generate random colors based on the give line colors
   Color generateRandomColor() {
     Random random = Random();
     int index = random.nextInt(widget.lineDecoration!.lineColors!.length);
@@ -174,28 +177,28 @@ class CrosswordState extends State<Crossword> {
               },
               onPanUpdate: (DragUpdateDetails details) {
                 setState(() {
-                  //get initial positions based on user interaction on the panel
+                  ///get initial positions based on user interaction on the panel
                   final dx = details.localPosition.dx - startPoint!.offset.dx;
                   final dy = details.localPosition.dy - startPoint!.offset.dy;
 
                   double angle = atan2(dy, dx);
 
-                  // Round the angle to the nearest multiple of 45 degrees
+                  /// Round the angle to the nearest multiple of 45 degrees
                   angle = (angle / (pi / 4)).round() * (pi / 4);
 
                   final length = sqrt(dx * dx + dy * dy);
 
-                  //get the restricted coordinates using the angle
+                  ///get the restricted coordinates using the angle
                   final restrictedDx = cos(angle) * length;
                   final restrictedDy = sin(angle) * length;
 
-                  //Use a custom class to get suitable conversions
+                  ///Use a custom class to get suitable conversions
                   LetterOffset c = LetterOffset(
                       offset: Offset(startPoint!.offset.dx + restrictedDx,
                           startPoint!.offset.dy + restrictedDy),
                       spacing: widget.spacing);
 
-                  //line can only be drawn by touching inside the panel
+                  ///line can only be drawn by touching inside the panel
                   if (isWithinLimit(c)) {
                     endPoint = c;
                     lineList.last = WordLine(
@@ -208,11 +211,11 @@ class CrosswordState extends State<Crossword> {
                 });
               },
               onPanEnd: (DragEndDetails details) async {
-                //get the last line drawn from the list
+                ///get the last line drawn from the list
                 List<Offset> usedOffsets = lineList.last.getTotalOffsets;
 
                 setState(() {
-                  //Check if the line can be drawn on specific angles
+                  ///Check if the line can be drawn on specific angles
                   if (selectedOffsets
                           .toSet()
                           .intersection(usedOffsets.toSet())
@@ -234,19 +237,19 @@ class CrosswordState extends State<Crossword> {
                     selectedOffsets.addAll(usedOffsets);
                     if (widget.hints.contains(lineList.last.word)) {
                       if (widget.lineDecoration!.correctColor != null) {
-                        //set a line color when the selected word is correct
+                        ///set a line color when the selected word is correct
                         lineList.last.color =
                             widget.lineDecoration!.correctColor!;
                       }
                     } else {
                       if (widget.lineDecoration!.incorrectColor != null) {
-                        //set a line color when the selected word is incorrect
+                        ///set a line color when the selected word is incorrect
                         lineList.last.color =
                             widget.lineDecoration!.incorrectColor!;
                       }
                     }
 
-                    //return a list of word
+                    ///return a list of word
 
                     widget.onLineDrawn(lineList.map((e) => e.word).toList());
                   } else {
@@ -257,7 +260,7 @@ class CrosswordState extends State<Crossword> {
                 });
               },
               child: CustomPaint(
-                //paints lines on the screen
+                ///paints lines on the screen
                 painter: LinePainter(
                     lineDecoration: widget.lineDecoration,
                     letters: letters,

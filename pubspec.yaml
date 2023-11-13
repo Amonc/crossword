@@ -1,6 +1,6 @@
 name: crossword
 description: A Flutter package providing a user interface for solving crossword puzzles in your app.
-version: 0.0.4
+version: 0.0.5
 homepage: https://github.com/Amonc/crossword
 
 environment:

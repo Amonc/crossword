@@ -1,5 +1,4 @@
-
-//transpose the 2x2 matrix
+///transpose the 2x2 matrix
 extension TransposeMatrixExtension on List<List<String>> {
   List<List<String>> transpose() {
     if (isEmpty || this[0].isEmpty) {
@@ -9,7 +8,7 @@ extension TransposeMatrixExtension on List<List<String>> {
     int rows = length;
     int cols = this[0].length;
 
-    // Initialize the transposed list with empty lists
+    /// Initialize the transposed list with empty lists
     List<List<String>> transposedList = List.generate(cols, (_) => []);
 
     for (int i = 0; i < rows; i++) {

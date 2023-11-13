@@ -1,3 +1,6 @@
+## 0.0.5
+* Proper documentation added
+
 ## 0.0.4
 * Bug Fix
 * Added a didUpdateWidget function which is automatically called
