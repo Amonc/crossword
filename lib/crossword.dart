@@ -70,6 +70,9 @@ class CrosswordState extends State<Crossword> {
     // TODO: implement didUpdateWidget
     super.didUpdateWidget(oldWidget);
     letters = widget.transposeMatrix! ?widget.letters: widget.letters.transpose();
+    lineList = [];
+    selectedOffsets = [];
+    updatedLineList = [];
   }
 
   //check whether user interaction on the panel within the letter positions limit or outside the area
