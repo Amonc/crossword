@@ -71,7 +71,6 @@ class _GamePageState extends State<GamePage> {
     return Scaffold(
         backgroundColor: Colors.black,
         body: Crossword(
-
           letters: const [
             ["F", "L", "U", "T", "T", "E", "R", "W", "U", "D", "B", "C"],
             ["R", "M", "I", "O", "P", "U", "I", "Q", "R", "L", "E", "G"],
@@ -91,6 +90,7 @@ class _GamePageState extends State<GamePage> {
           lineDecoration:
               LineDecoration(lineColors: lineColors, strokeWidth: 20),
           hints: const ["FLUTTER", "GAMES", "UI", "COLORS"],
+          overlap: true,
         ));
   }
 }
