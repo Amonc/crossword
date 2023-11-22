@@ -23,7 +23,7 @@ class Crossword extends StatefulWidget {
   final List<String> hints;
   final TextStyle? textStyle;
   final bool? acceptReversedDirection;
-  final bool overlap;
+  final bool? allowOverlap;
 
   const Crossword({
     super.key,
@@ -38,7 +38,7 @@ class Crossword extends StatefulWidget {
     this.textStyle,
     this.acceptReversedDirection = false,
     this.transposeMatrix = false,
-    this.overlap = false,
+    this.allowOverlap = false,
   }) : assert(
           (drawCrossLine ?? true) ||
               (drawHorizontalLine ?? true) ||
@@ -218,7 +218,7 @@ class CrosswordState extends State<Crossword> {
 
                 setState(() {
                   ///Check if the line can be drawn on specific angles
-                  if ((widget.overlap ||
+                  if ((widget.allowOverlap! ||
                           selectedOffsets
                               .toSet()
                               .intersection(usedOffsets.toSet())

@@ -90,7 +90,7 @@ class _GamePageState extends State<GamePage> {
           lineDecoration:
               LineDecoration(lineColors: lineColors, strokeWidth: 20),
           hints: const ["FLUTTER", "GAMES", "UI", "COLORS"],
-          overlap: true,
+          allowOverlap: true,
         ));
   }
 }
