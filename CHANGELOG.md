@@ -1,3 +1,6 @@
+## 0.0.6
+* Added Optional Overlap Feature
+
 ## 0.0.5
 * Proper documentation added
 
