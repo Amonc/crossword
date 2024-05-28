@@ -1,4 +1,4 @@
-## 0.0.7
+## 0.0.8
 
 * Gradient Colors, TextStyles and Line Decoration updated to the Crossword Widget
 * Added Option to control over drawing or not when incorrect words in the crossword (addIncorrectWord: true)

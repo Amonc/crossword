@@ -86,12 +86,20 @@ class _GamePageState extends State<GamePage> {
           spacing: const Offset(30, 30),
           onLineDrawn: (List<String> words) {},
           textStyle: const TextStyle(
-              color: Colors.black, fontSize: 16, fontWeight: FontWeight.bold),
+              color: Colors.blue, fontSize: 16, fontWeight: FontWeight.bold),
           lineDecoration: const LineDecoration(
             lineGradientColors: [
-              [Colors.blue, Colors.black, Colors.red],
-              [Colors.orange, Colors.black],
+              [
+                Colors.blue,
+                Colors.black,
+                Colors.red,
+                Colors.orange,
+                Colors.black,
+                Colors.amber,
+                Colors.green
+              ],
             ],
+            incorrectGradientColors: [Colors.red, Colors.black],
             strokeWidth: 26,
             lineTextStyle: TextStyle(
                 color: Colors.white, fontSize: 16, fontWeight: FontWeight.bold),
