@@ -12,6 +12,7 @@ import 'package:flutter/material.dart';
 
 /// Represents a widget for a crossword game board.
 class Crossword extends StatefulWidget {
+  final bool? addIncorrectWord;
   final List<List<String>> letters;
   final bool? transposeMatrix;
   final LineDecoration? lineDecoration;
@@ -34,11 +35,12 @@ class Crossword extends StatefulWidget {
     this.drawHorizontalLine,
     this.drawVerticalLine,
     required this.hints,
-    this.lineDecoration = const LineDecoration(),
+    this.lineDecoration,
     this.textStyle,
     this.acceptReversedDirection = false,
     this.transposeMatrix = false,
     this.allowOverlap = false,
+    this.addIncorrectWord = true,
   }) : assert(
           (drawCrossLine ?? true) ||
               (drawHorizontalLine ?? true) ||
@@ -54,7 +56,7 @@ class Crossword extends StatefulWidget {
 class CrosswordState extends State<Crossword> {
   List<WordLine> lineList = [];
   List<Offset> selectedOffsets = [];
-  Color? color;
+  List<Color> colors = [];
 
   List<WordLine> updatedLineList = [];
   LetterOffset? startPoint;
@@ -145,10 +147,11 @@ class CrosswordState extends State<Crossword> {
   }
 
   ///generate random colors based on the give line colors
-  Color generateRandomColor() {
+  List<Color> generateRandomColors() {
     Random random = Random();
-    int index = random.nextInt(widget.lineDecoration!.lineColors!.length);
-    return widget.lineDecoration!.lineColors![index];
+    int index =
+        random.nextInt(widget.lineDecoration!.lineGradientColors.length);
+    return widget.lineDecoration!.lineGradientColors[index];
   }
 
   @override
@@ -162,7 +165,7 @@ class CrosswordState extends State<Crossword> {
           child: Center(
             child: GestureDetector(
               onPanStart: (DragStartDetails details) {
-                color = generateRandomColor();
+                colors = generateRandomColors();
 
                 setState(() {
                   startPoint = LetterOffset(
@@ -170,11 +173,11 @@ class CrosswordState extends State<Crossword> {
                   endPoint = LetterOffset(
                       offset: details.localPosition, spacing: widget.spacing);
                   lineList.add(WordLine(
-                      offsets: [startPoint!, endPoint!],
-                      color: color!,
-                      letters: letters,
-                      acceptReversedDirection:
-                          widget.acceptReversedDirection!));
+                    offsets: [startPoint!, endPoint!],
+                    colors: colors,
+                    letters: letters,
+                    acceptReversedDirection: widget.acceptReversedDirection!,
+                  ));
                 });
               },
               onPanUpdate: (DragUpdateDetails details) {
@@ -204,11 +207,11 @@ class CrosswordState extends State<Crossword> {
                   if (isWithinLimit(c)) {
                     endPoint = c;
                     lineList.last = WordLine(
-                        offsets: [startPoint!, endPoint!],
-                        color: color!,
-                        letters: letters,
-                        acceptReversedDirection:
-                            widget.acceptReversedDirection!);
+                      offsets: [startPoint!, endPoint!],
+                      colors: colors,
+                      letters: letters,
+                      acceptReversedDirection: widget.acceptReversedDirection!,
+                    );
                   }
                 });
               },
@@ -218,7 +221,7 @@ class CrosswordState extends State<Crossword> {
 
                 setState(() {
                   ///Check if the line can be drawn on specific angles
-                  if ((widget.allowOverlap! ||
+                  if (((widget.allowOverlap ?? false) ||
                           selectedOffsets
                               .toSet()
                               .intersection(usedOffsets.toSet())
@@ -239,16 +242,22 @@ class CrosswordState extends State<Crossword> {
                               : false))) {
                     selectedOffsets.addAll(usedOffsets);
                     if (widget.hints.contains(lineList.last.word)) {
-                      if (widget.lineDecoration!.correctColor != null) {
+                      if (widget.lineDecoration!.correctGradientColors !=
+                          null) {
                         ///set a line color when the selected word is correct
-                        lineList.last.color =
-                            widget.lineDecoration!.correctColor!;
+                        lineList.last.colors =
+                            widget.lineDecoration!.correctGradientColors!;
                       }
                     } else {
-                      if (widget.lineDecoration!.incorrectColor != null) {
-                        ///set a line color when the selected word is incorrect
-                        lineList.last.color =
-                            widget.lineDecoration!.incorrectColor!;
+                      if (widget.addIncorrectWord ?? true) {
+                        if (widget.lineDecoration!.incorrectGradientColors !=
+                            null) {
+                          ///set a line color when the selected word is incorrect
+                          lineList.last.colors =
+                              widget.lineDecoration!.incorrectGradientColors!;
+                        }
+                      } else {
+                        lineList.removeLast();
                       }
                     }
 

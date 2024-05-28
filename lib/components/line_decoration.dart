@@ -1,17 +1,21 @@
 import 'package:flutter/material.dart';
 
 class LineDecoration {
-  final List<Color>? lineColors;
+  final List<List<Color>> lineGradientColors;
 
-  final Color? incorrectColor;
-  final Color? correctColor;
+  final List<Color>? incorrectGradientColors;
+  final List<Color>? correctGradientColors;
   final double? strokeWidth;
   final StrokeCap? strokeCap;
+  final TextStyle? lineTextStyle;
 
-  const LineDecoration(
-      {this.lineColors = const [Colors.blue],
-      this.incorrectColor,
-      this.correctColor,
-      this.strokeWidth = 20,
-      this.strokeCap = StrokeCap.round});
+  const LineDecoration({
+    required this.lineGradientColors,
+    this.incorrectGradientColors = const [Colors.red, Colors.black],
+    this.correctGradientColors = const [Colors.green, Colors.black],
+    this.strokeWidth = 20,
+    this.strokeCap = StrokeCap.round,
+    this.lineTextStyle = const TextStyle(
+        color: Colors.white, fontSize: 16, fontWeight: FontWeight.bold),
+  });
 }

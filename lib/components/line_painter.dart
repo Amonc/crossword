@@ -14,7 +14,7 @@ class LinePainter extends CustomPainter {
 
   LinePainter({
     this.textStyle = const TextStyle(color: Colors.black, fontSize: 16),
-    this.lineDecoration = const LineDecoration(),
+    this.lineDecoration,
     required this.letters,
     required this.lineList,
     required this.spacing,
@@ -30,14 +30,32 @@ class LinePainter extends CustomPainter {
       ..strokeCap = lineDecoration!.strokeCap!;
 
     ///paint lines on the grid
-    for (var points in lineList) {
+    for (var word in lineList) {
       ///set the line color
-      paint.color = points.color;
-
-      for (int i = 0; i < points.offsets.length - 1; i++) {
-        canvas.drawLine(points.offsets[i].getBiggerOffset,
-            points.offsets[i + 1].getBiggerOffset, paint);
+      ///
+      if (word.colors.isEmpty) {
+        paint.color = Colors.blue;
+      } else if (word.colors.length < 2) {
+        paint.color = word.colors.first;
+      } else {
+        paint.shader = LinearGradient(
+          colors: word.colors,
+          begin: Alignment.topLeft,
+          end: Alignment.bottomRight,
+        ).createShader(Rect.fromPoints(word.offsets.first.getBiggerOffset,
+            word.offsets.last.getBiggerOffset));
       }
+
+      for (int i = 0; i < word.offsets.length - 1; i++) {
+        canvas.drawLine(word.offsets[i].getBiggerOffset,
+            word.offsets[i + 1].getBiggerOffset, paint);
+      }
+    }
+    List<List<Offset>> offsets = [];
+    if (lineList.isNotEmpty) {
+      offsets = lineList
+          .map((e) => e.offsets.map((e) => e.getSmallerOffset).toList())
+          .toList();
     }
 
     ///paint texts on the grid
@@ -46,11 +64,15 @@ class LinePainter extends CustomPainter {
         double x = i.toDouble() * spacing.dx + spacing.dx / 2;
         double y = j.toDouble() * spacing.dy + spacing.dy / 2;
 
+        Offset offset = Offset(i.toDouble(), j.toDouble());
+
+        bool within = withinOffset(offsets, offset);
+
         /// Draw letters
         TextPainter painter = TextPainter(
           text: TextSpan(
             text: letters[i][j],
-            style: textStyle,
+            style: within ? lineDecoration?.lineTextStyle : textStyle,
           ),
           textDirection: TextDirection.ltr,
           textAlign: TextAlign.center,
@@ -64,4 +86,45 @@ class LinePainter extends CustomPainter {
 
   @override
   bool shouldRepaint(LinePainter oldDelegate) => true;
+
+  bool withinOffset(List<List<Offset>> offsetList, Offset offset) {
+    bool within = false;
+    for (var offsets in offsetList) {
+      if (isPointOnLineSegment(offset, offsets.first, offsets.last)) {
+        within = true;
+        break;
+      }
+    }
+    return within;
+  }
+
+  bool isPointOnLineSegment(Offset p, Offset a, Offset b) {
+    // Calculate the cross product
+
+    if (a.dx == b.dx && a.dy == b.dy) {
+      return false;
+    }
+    double crossProduct =
+        (p.dy - a.dy) * (b.dx - a.dx) - (p.dx - a.dx) * (b.dy - a.dy);
+
+    // Check if the point is collinear with the line segment
+    if (crossProduct.abs() > 1e-10) {
+      return false;
+    }
+
+    // Check if the point is within the bounds of the line segment
+    double dotProduct =
+        (p.dx - a.dx) * (b.dx - a.dx) + (p.dy - a.dy) * (b.dy - a.dy);
+    if (dotProduct < 0) {
+      return false;
+    }
+
+    double squaredLengthBA =
+        (b.dx - a.dx) * (b.dx - a.dx) + (b.dy - a.dy) * (b.dy - a.dy);
+    if (dotProduct > squaredLengthBA) {
+      return false;
+    }
+
+    return true;
+  }
 }
