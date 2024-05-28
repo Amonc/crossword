@@ -3,6 +3,7 @@
 export "FLUTTER_ROOT=/Users/amonchowdhury/Development/flutter"
 export "FLUTTER_APPLICATION_PATH=/Users/amonchowdhury/StudioProjects/Crossword"
 export "COCOAPODS_PARALLEL_CODE_SIGN=true"
+export "FLUTTER_TARGET=lib/main.dart"
 export "FLUTTER_BUILD_DIR=build"
 export "FLUTTER_BUILD_NAME=0.0.6"
 export "FLUTTER_BUILD_NUMBER=0.0.6"

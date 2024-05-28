@@ -1,18 +1,19 @@
 import 'package:crossword/components/letter_offset.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
 
 class WordLine extends ChangeNotifier {
   final List<List<String>> letters;
   final List<LetterOffset> offsets;
   final bool acceptReversedDirection;
-  Color color;
+  List<Color> colors;
 
   int xSign = 0;
   int ySign = 0;
 
   WordLine(
       {required this.offsets,
-      required this.color,
+      required this.colors,
       required this.letters,
       this.acceptReversedDirection = false});
 
@@ -51,8 +52,8 @@ class WordLine extends ChangeNotifier {
   }
 
   ///set the line color
-  set setColor(Color c) {
-    color = c;
+  set setColors(List<Color> c) {
+    colors = c;
     notifyListeners();
   }
 

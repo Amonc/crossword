@@ -1,6 +1,5 @@
 import 'dart:math';
 
-import 'package:crossword/components/line_decoration.dart';
 import 'package:crossword/crossword.dart';
 import 'package:flutter/material.dart';
 
@@ -69,7 +68,7 @@ class _GamePageState extends State<GamePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        backgroundColor: Colors.black,
+        backgroundColor: Colors.white,
         body: Crossword(
           letters: const [
             ["F", "L", "U", "T", "T", "E", "R", "W", "U", "D", "B", "C"],
@@ -86,11 +85,18 @@ class _GamePageState extends State<GamePage> {
           ],
           spacing: const Offset(30, 30),
           onLineDrawn: (List<String> words) {},
-          textStyle: const TextStyle(color: Colors.white, fontSize: 20),
-          lineDecoration:
-              LineDecoration(lineColors: lineColors, strokeWidth: 20),
+          textStyle: const TextStyle(
+              color: Colors.black, fontSize: 16, fontWeight: FontWeight.bold),
+          lineDecoration: const LineDecoration(
+            lineGradientColors: [
+              [Colors.blue, Colors.black, Colors.red],
+              [Colors.orange, Colors.black],
+            ],
+            strokeWidth: 26,
+            lineTextStyle: TextStyle(
+                color: Colors.white, fontSize: 16, fontWeight: FontWeight.bold),
+          ),
           hints: const ["FLUTTER", "GAMES", "UI", "COLORS"],
-          allowOverlap: true,
         ));
   }
 }
