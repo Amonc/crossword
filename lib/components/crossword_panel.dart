@@ -3,6 +3,7 @@ import 'dart:math';
 import 'package:crossword/components/letter_offset.dart';
 import 'package:crossword/components/line_decoration.dart';
 import 'package:crossword/components/line_painter.dart';
+import 'package:crossword/components/reveal_letter_decoration.dart';
 import 'package:crossword/components/word_line.dart';
 import 'package:crossword/helper/extensions.dart';
 import 'package:flutter/material.dart';
@@ -24,6 +25,9 @@ class Crossword extends StatefulWidget {
   final TextStyle? textStyle;
   final bool? acceptReversedDirection;
   final bool? allowOverlap;
+  final bool? updateStateWithParent;
+
+  final RevealLetterDecoration? revealLetterDecoration;
 
   const Crossword({
     super.key,
@@ -42,6 +46,9 @@ class Crossword extends StatefulWidget {
     this.addIncorrectWord = true,
     this.onLineUpdate,
     this.invalidLineColors,
+    this.revealLetterDecoration = const RevealLetterDecoration(
+        shakeOffset: Offset(20, 50), scaleFactor: 2),
+    this.updateStateWithParent = false,
   }) : assert(
           (drawCrossLine ?? true) ||
               (drawHorizontalLine ?? true) ||
@@ -54,7 +61,8 @@ class Crossword extends StatefulWidget {
 }
 
 /// State class for the Crossword widget.
-class CrosswordState extends State<Crossword> {
+class CrosswordState extends State<Crossword>
+    with SingleTickerProviderStateMixin {
   List<WordLine> lineList = [];
   List<Offset> selectedOffsets = [];
   List<Color> colors = [];
@@ -63,6 +71,9 @@ class CrosswordState extends State<Crossword> {
   LetterOffset? startPoint;
   LetterOffset? endPoint;
   List<List<String>> letters = [];
+  late AnimationController _controller;
+  late Animation<Offset> _shakeAnimation;
+  late Animation<double> _scaleAnimation;
 
   @override
   void initState() {
@@ -70,17 +81,54 @@ class CrosswordState extends State<Crossword> {
     letters =
         widget.transposeMatrix! ? widget.letters : widget.letters.transpose();
     super.initState();
+
+    ///initialize the animation controller
+    _controller = AnimationController(
+      duration: widget.revealLetterDecoration!.animationDuration,
+      vsync: this,
+    );
+
+    ///set the shake and scale animation
+    _shakeAnimation = Tween<Offset>(
+            begin: Offset.zero, end: widget.revealLetterDecoration!.shakeOffset)
+        .chain(CurveTween(curve: widget.revealLetterDecoration!.shakeCurve))
+        .animate(_controller);
+
+    ///set the scale animation
+    _scaleAnimation = Tween<double>(
+      begin: 1,
+      end: widget.revealLetterDecoration!.scaleFactor,
+    )
+        .chain(CurveTween(curve: widget.revealLetterDecoration!.scaleCurve))
+        .animate(_controller);
+  }
+
+  Offset revealLetterPositions = const Offset(0, 0);
+
+  ///animate the panel would be called using GlobalKey<CrosswordState>
+  animate({required Offset offset}) {
+    revealLetterPositions = offset;
+    setState(() {});
+    _controller.forward().then((value) => _controller.reverse());
+  }
+
+  @override
+  void dispose() {
+    _controller.dispose();
+    super.dispose();
   }
 
   @override
   void didUpdateWidget(covariant Crossword oldWidget) {
     /// TODO: implement didUpdateWidget
     super.didUpdateWidget(oldWidget);
-    letters =
-        widget.transposeMatrix! ? widget.letters : widget.letters.transpose();
-    lineList = [];
-    selectedOffsets = [];
-    updatedLineList = [];
+    if (widget.updateStateWithParent!) {
+      letters =
+          widget.transposeMatrix! ? widget.letters : widget.letters.transpose();
+      lineList = [];
+      selectedOffsets = [];
+      updatedLineList = [];
+    }
   }
 
   ///check whether user interaction on the panel within the letter positions limit or outside the area
@@ -219,6 +267,17 @@ class CrosswordState extends State<Crossword> {
                   bool isC = ((widget.drawCrossLine ?? true)
                       ? isCrossLine(lineList.last.offsets)
                       : false);
+                  List<Offset> usedOffsets = lineList.last.getTotalOffsets;
+                  bool allowOverlap = ((widget.allowOverlap ?? false) ||
+                          selectedOffsets
+                              .toSet()
+                              .intersection(usedOffsets.toSet())
+                              .isEmpty) &&
+                      lineList.last.offsets
+                              .map((e) => e.getSmallerOffset)
+                              .toSet()
+                              .length >
+                          1;
 
                   ///line can only be drawn by touching inside the panel
                   if (isWithinLimit(c)) {
@@ -230,7 +289,8 @@ class CrosswordState extends State<Crossword> {
                       acceptReversedDirection: widget.acceptReversedDirection!,
                     );
 
-                    if (isC == false && isH == false && isV == false) {
+                    if (isC == false && isH == false && isV == false ||
+                        allowOverlap == false) {
                       lineList.last = WordLine(
                         offsets: [startPoint!, endPoint!],
                         colors: widget.invalidLineColors ??
@@ -311,17 +371,25 @@ class CrosswordState extends State<Crossword> {
                   }
                 });
               },
-              child: CustomPaint(
-                ///paints lines on the screen
-                painter: LinePainter(
-                    lineDecoration: widget.lineDecoration,
-                    letters: letters,
-                    lineList: lineList,
-                    textStyle: widget.textStyle,
-                    spacing: widget.spacing,
-                    hints: widget.hints),
-                size: Size(letters.length * widget.spacing.dx,
-                    letters.first.length * widget.spacing.dy),
+              child: AnimatedBuilder(
+                animation: _controller,
+                builder: (BuildContext context, Widget? child) {
+                  return CustomPaint(
+                    ///paints lines on the screen
+                    painter: LinePainter(
+                        revealLetterPositions: revealLetterPositions,
+                        scaleAnimationValue: _scaleAnimation.value,
+                        shakeAnimationValue: _shakeAnimation.value,
+                        lineDecoration: widget.lineDecoration,
+                        letters: letters,
+                        lineList: lineList,
+                        textStyle: widget.textStyle,
+                        spacing: widget.spacing,
+                        hints: widget.hints),
+                    size: Size(letters.length * widget.spacing.dx,
+                        letters.first.length * widget.spacing.dy),
+                  );
+                },
               ),
             ),
           ),

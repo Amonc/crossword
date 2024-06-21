@@ -9,16 +9,21 @@ class LinePainter extends CustomPainter {
   final List<String> hints;
   final Color? correctColor;
   final TextStyle? textStyle;
-
+  final Offset shakeAnimationValue;
+  final double scaleAnimationValue;
+  final Offset? revealLetterPositions;
   final LineDecoration? lineDecoration;
 
   LinePainter({
     this.textStyle = const TextStyle(color: Colors.black, fontSize: 16),
     this.lineDecoration,
+    required this.shakeAnimationValue,
+    required this.scaleAnimationValue,
     required this.letters,
     required this.lineList,
     required this.spacing,
     required this.hints,
+    this.revealLetterPositions,
     this.correctColor = Colors.green,
   });
 
@@ -69,17 +74,28 @@ class LinePainter extends CustomPainter {
         bool within = withinOffset(offsets, offset);
 
         /// Draw letters
+        //draw circles
+        bool reveal =
+            revealLetterPositions != null && revealLetterPositions == offset;
         TextPainter painter = TextPainter(
           text: TextSpan(
             text: letters[i][j],
-            style: within ? lineDecoration?.lineTextStyle : textStyle,
+            style: (within ? lineDecoration?.lineTextStyle : textStyle)
+                ?.copyWith(
+                    fontSize:
+                        ((within ? lineDecoration?.lineTextStyle : textStyle)
+                                ?.fontSize)! *
+                            (reveal ? scaleAnimationValue : 1)),
           ),
           textDirection: TextDirection.ltr,
           textAlign: TextAlign.center,
         );
+
         painter.layout();
         painter.paint(
-            canvas, Offset(x - painter.width / 2, y - painter.height / 2));
+            canvas,
+            Offset(x - painter.width / 2, y - painter.height / 2) +
+                (reveal ? shakeAnimationValue : Offset.zero));
       }
     }
   }
