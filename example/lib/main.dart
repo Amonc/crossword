@@ -84,7 +84,12 @@ class _GamePageState extends State<GamePage> {
             ["S", "E", "S", "T", "L", "A", "O", "P", "U", "P", "E", "S"]
           ],
           spacing: const Offset(30, 30),
-          onLineDrawn: (List<String> words) {},
+          onLineDrawn: (List<String> words) {
+            print(words);
+          },
+          onLineUpdate: (String word){
+            print(word);
+          },
           textStyle: const TextStyle(
               color: Colors.blue, fontSize: 16, fontWeight: FontWeight.bold),
           lineDecoration: const LineDecoration(

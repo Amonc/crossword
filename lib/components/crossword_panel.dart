@@ -18,6 +18,7 @@ class Crossword extends StatefulWidget {
   final bool? drawHorizontalLine;
   final bool? drawVerticalLine;
   final Function(List<String> words) onLineDrawn;
+  final Function(String word)? onLineUpdate;
   final List<String> hints;
   final TextStyle? textStyle;
   final bool? acceptReversedDirection;
@@ -38,6 +39,7 @@ class Crossword extends StatefulWidget {
     this.transposeMatrix = false,
     this.allowOverlap = false,
     this.addIncorrectWord = true,
+    this.onLineUpdate,
   }) : assert(
           (drawCrossLine ?? true) ||
               (drawHorizontalLine ?? true) ||
@@ -209,6 +211,13 @@ class CrosswordState extends State<Crossword> {
                       letters: letters,
                       acceptReversedDirection: widget.acceptReversedDirection!,
                     );
+
+                    if(widget.onLineUpdate != null){
+                      if(lineList.isNotEmpty){
+                        widget.onLineUpdate!(lineList.last.word);
+                      }
+
+                    }
                   }
                 });
               },
@@ -261,6 +270,7 @@ class CrosswordState extends State<Crossword> {
                     ///return a list of word
 
                     widget.onLineDrawn(lineList.map((e) => e.word).toList());
+
                   } else {
                     startPoint = null;
                     endPoint = null;
