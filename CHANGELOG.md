@@ -1,3 +1,10 @@
+## 1.0.0
+
+* Added invalid line colors
+* Added reveal letter animation with decoration options
+* Added onUpdate line to show the construction of the word real time
+* Some bug fixes and improvements
+
 ## 0.0.8
 
 * Gradient Colors, TextStyles and Line Decoration updated to the Crossword Widget

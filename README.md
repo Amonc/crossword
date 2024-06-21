@@ -47,7 +47,7 @@ a [dependency in your pubspec.yaml file](https://flutter.io/using-packages/).
 
 ```yaml
 dependencies:
-  crossword: ^0.0.8
+  crossword: ^1.0.0
 ```
 
 Import the package in your Dart code and instantiate the `Crossword` widget.
@@ -125,6 +125,30 @@ Crossword(
 - `strokeWidth`: Accepts a `double` to update the width of the lines.
 - `strokeCap`: Accepts a `StrokeCap` to update the stroke cap of the lines.
 - `lineTextStyle`: Accepts a `TextStyle` to update the style of the words which are drawn by the user.
+
+## Reveal Letter Animation
+
+- Use a Global Key to access the `Crossword` widget and call the `animate` method to animate the letter
+decoration.
+
+```dart
+final GlobalKey<CrosswordState> _crosswordState = GlobalKey();
+```
+- Pass the `GlobalKey` to the `Crossword` widget
+
+```dart
+ Crossword(key: _crosswordState);
+```
+- Access the `Crossword` widget using the global key  and call the `animate` method to animate the letter
+
+```dart
+//offset is the position of the letter in the crossword
+ crosswordState.currentState!.animate(offset: const Offset(7, 3));
+```
+
+- `revealLetterDecoration`: Accepts a `RevealLetterDecoration` to animate the decoration of the
+  letters 
+
 
 ## Contributions
 
