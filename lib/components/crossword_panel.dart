@@ -12,6 +12,7 @@ class Crossword extends StatefulWidget {
   final bool? addIncorrectWord;
   final List<List<String>> letters;
   final bool? transposeMatrix;
+  final List<Color>? invalidLineColors;
   final LineDecoration? lineDecoration;
   final Offset spacing;
   final bool? drawCrossLine;
@@ -40,6 +41,7 @@ class Crossword extends StatefulWidget {
     this.allowOverlap = false,
     this.addIncorrectWord = true,
     this.onLineUpdate,
+    this.invalidLineColors,
   }) : assert(
           (drawCrossLine ?? true) ||
               (drawHorizontalLine ?? true) ||
@@ -93,6 +95,8 @@ class CrosswordState extends State<Crossword> {
   bool isHorizontalLine(List<LetterOffset> offsets) {
     if (offsets.isEmpty) {
       return false;
+    } else if (offsets.first == offsets.last) {
+      return false;
     }
 
     double firstY = offsets.first.getSmallerOffset.dy;
@@ -110,6 +114,8 @@ class CrosswordState extends State<Crossword> {
   bool isVerticalLine(List<LetterOffset> offsets) {
     if (offsets.isEmpty) {
       return false;
+    } else if (offsets.first == offsets.last) {
+      return false;
     }
 
     double firstX = offsets.first.getSmallerOffset.dx;
@@ -126,6 +132,8 @@ class CrosswordState extends State<Crossword> {
   ///check if the drawn line on a 45 degree angled track
   bool isCrossLine(List<LetterOffset> offsets) {
     if (offsets.isEmpty) {
+      return false;
+    } else if (offsets.first == offsets.last) {
       return false;
     }
 
@@ -202,6 +210,16 @@ class CrosswordState extends State<Crossword> {
                           startPoint!.offset.dy + restrictedDy),
                       spacing: widget.spacing);
 
+                  bool isH = ((widget.drawHorizontalLine ?? true)
+                      ? isHorizontalLine(lineList.last.offsets)
+                      : false);
+                  bool isV = ((widget.drawVerticalLine ?? true)
+                      ? isVerticalLine(lineList.last.offsets)
+                      : false);
+                  bool isC = ((widget.drawCrossLine ?? true)
+                      ? isCrossLine(lineList.last.offsets)
+                      : false);
+
                   ///line can only be drawn by touching inside the panel
                   if (isWithinLimit(c)) {
                     endPoint = c;
@@ -212,17 +230,33 @@ class CrosswordState extends State<Crossword> {
                       acceptReversedDirection: widget.acceptReversedDirection!,
                     );
 
-                    if(widget.onLineUpdate != null){
-                      if(lineList.isNotEmpty){
-                        widget.onLineUpdate!(lineList.last.word);
+                    if (isC == false && isH == false && isV == false) {
+                      lineList.last = WordLine(
+                        offsets: [startPoint!, endPoint!],
+                        colors: widget.invalidLineColors ??
+                            [Colors.red.withOpacity(.2)],
+                        letters: letters,
+                        acceptReversedDirection:
+                            widget.acceptReversedDirection!,
+                      );
+                      if (widget.onLineUpdate != null) {
+                        if (lineList.isNotEmpty) {
+                          widget.onLineUpdate!("");
+                        }
                       }
-
+                    } else {
+                      if (widget.onLineUpdate != null) {
+                        if (lineList.isNotEmpty) {
+                          widget.onLineUpdate!(lineList.last.word);
+                        }
+                      }
                     }
                   }
                 });
               },
               onPanEnd: (DragEndDetails details) async {
                 ///get the last line drawn from the list
+
                 List<Offset> usedOffsets = lineList.last.getTotalOffsets;
 
                 setState(() {
@@ -270,7 +304,6 @@ class CrosswordState extends State<Crossword> {
                     ///return a list of word
 
                     widget.onLineDrawn(lineList.map((e) => e.word).toList());
-
                   } else {
                     startPoint = null;
                     endPoint = null;

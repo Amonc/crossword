@@ -70,6 +70,7 @@ class _GamePageState extends State<GamePage> {
     return Scaffold(
         backgroundColor: Colors.white,
         body: Crossword(
+          drawCrossLine: false,
           letters: const [
             ["F", "L", "U", "T", "T", "E", "R", "W", "U", "D", "B", "C"],
             ["R", "M", "I", "O", "P", "U", "I", "Q", "R", "L", "E", "G"],
@@ -84,12 +85,8 @@ class _GamePageState extends State<GamePage> {
             ["S", "E", "S", "T", "L", "A", "O", "P", "U", "P", "E", "S"]
           ],
           spacing: const Offset(30, 30),
-          onLineDrawn: (List<String> words) {
-            print(words);
-          },
-          onLineUpdate: (String word){
-            print(word);
-          },
+          onLineDrawn: (List<String> words) {},
+          onLineUpdate: (String word) {},
           textStyle: const TextStyle(
               color: Colors.blue, fontSize: 16, fontWeight: FontWeight.bold),
           lineDecoration: const LineDecoration(
