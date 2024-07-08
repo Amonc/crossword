@@ -26,6 +26,7 @@ class Crossword extends StatefulWidget {
   final bool? acceptReversedDirection;
   final bool? allowOverlap;
   final bool? updateStateWithParent;
+  final double? sizedBoxHeightOnTop;
 
   final RevealLetterDecoration? revealLetterDecoration;
 
@@ -49,6 +50,7 @@ class Crossword extends StatefulWidget {
     this.revealLetterDecoration = const RevealLetterDecoration(
         shakeOffset: Offset(20, 50), scaleFactor: 2),
     this.updateStateWithParent = false,
+    this.sizedBoxHeightOnTop = 30,
   }) : assert(
           (drawCrossLine ?? true) ||
               (drawHorizontalLine ?? true) ||
@@ -213,8 +215,8 @@ class CrosswordState extends State<Crossword>
   Widget build(BuildContext context) {
     return Column(
       children: [
-        const SizedBox(
-          height: 30,
+         SizedBox(
+          height: widget.sizedBoxHeightOnTop,
         ),
         Expanded(
           child: Center(
@@ -345,8 +347,7 @@ class CrosswordState extends State<Crossword>
                       if (widget.lineDecoration!.correctGradientColors !=
                           null) {
                         ///set a line color when the selected word is correct
-                        lineList.last.colors =
-                            widget.lineDecoration!.correctGradientColors!;
+                        lineList.last.colors = colors;
                       }
                     } else {
                       if (widget.addIncorrectWord ?? true) {
