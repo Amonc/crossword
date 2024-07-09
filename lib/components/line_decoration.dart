@@ -12,7 +12,7 @@ class LineDecoration {
   const LineDecoration({
     required this.lineGradientColors,
     this.incorrectGradientColors = const [Colors.red, Colors.black],
-    this.correctGradientColors = const [Colors.green, Colors.black],
+    this.correctGradientColors,
     this.strokeWidth = 20,
     this.strokeCap = StrokeCap.round,
     this.lineTextStyle = const TextStyle(
