@@ -26,7 +26,6 @@ class Crossword extends StatefulWidget {
   final bool? acceptReversedDirection;
   final bool? allowOverlap;
   final bool? updateStateWithParent;
-  final double? sizedBoxHeightOnTop;
 
   final RevealLetterDecoration? revealLetterDecoration;
 
@@ -47,11 +46,13 @@ class Crossword extends StatefulWidget {
     this.addIncorrectWord = true,
     this.onLineUpdate,
     this.invalidLineColors,
-    this.revealLetterDecoration = const RevealLetterDecoration(shakeOffset: Offset(20, 50), scaleFactor: 2),
+    this.revealLetterDecoration = const RevealLetterDecoration(
+        shakeOffset: Offset(20, 50), scaleFactor: 2),
     this.updateStateWithParent = false,
-    this.sizedBoxHeightOnTop = 30,
   }) : assert(
-          (drawCrossLine ?? true) || (drawHorizontalLine ?? true) || (drawVerticalLine ?? true),
+          (drawCrossLine ?? true) ||
+              (drawHorizontalLine ?? true) ||
+              (drawVerticalLine ?? true),
           "At least one of drawCrossLine, drawHorizontalLine, or drawVerticalLine should be true",
         );
 
@@ -60,7 +61,8 @@ class Crossword extends StatefulWidget {
 }
 
 /// State class for the Crossword widget.
-class CrosswordState extends State<Crossword> with SingleTickerProviderStateMixin {
+class CrosswordState extends State<Crossword>
+    with SingleTickerProviderStateMixin {
   List<WordLine> lineList = [];
   List<Offset> selectedOffsets = [];
   List<Color> colors = [];
@@ -76,7 +78,8 @@ class CrosswordState extends State<Crossword> with SingleTickerProviderStateMixi
   @override
   void initState() {
     /// TODO: implement initState
-    letters = widget.transposeMatrix! ? widget.letters : widget.letters.transpose();
+    letters =
+        widget.transposeMatrix! ? widget.letters : widget.letters.transpose();
     super.initState();
 
     ///initialize the animation controller
@@ -86,7 +89,8 @@ class CrosswordState extends State<Crossword> with SingleTickerProviderStateMixi
     );
 
     ///set the shake and scale animation
-    _shakeAnimation = Tween<Offset>(begin: Offset.zero, end: widget.revealLetterDecoration!.shakeOffset)
+    _shakeAnimation = Tween<Offset>(
+            begin: Offset.zero, end: widget.revealLetterDecoration!.shakeOffset)
         .chain(CurveTween(curve: widget.revealLetterDecoration!.shakeCurve))
         .animate(_controller);
 
@@ -94,7 +98,9 @@ class CrosswordState extends State<Crossword> with SingleTickerProviderStateMixi
     _scaleAnimation = Tween<double>(
       begin: 1,
       end: widget.revealLetterDecoration!.scaleFactor,
-    ).chain(CurveTween(curve: widget.revealLetterDecoration!.scaleCurve)).animate(_controller);
+    )
+        .chain(CurveTween(curve: widget.revealLetterDecoration!.scaleCurve))
+        .animate(_controller);
   }
 
   Offset revealLetterPositions = const Offset(0, 0);
@@ -117,7 +123,8 @@ class CrosswordState extends State<Crossword> with SingleTickerProviderStateMixi
     /// TODO: implement didUpdateWidget
     super.didUpdateWidget(oldWidget);
     if (widget.updateStateWithParent!) {
-      letters = widget.transposeMatrix! ? widget.letters : widget.letters.transpose();
+      letters =
+          widget.transposeMatrix! ? widget.letters : widget.letters.transpose();
       lineList = [];
       selectedOffsets = [];
       updatedLineList = [];
@@ -180,8 +187,10 @@ class CrosswordState extends State<Crossword> with SingleTickerProviderStateMixi
 
     for (int x = 0; x < offsets.length; x++) {
       if (x > 0) {
-        int a = offsets[x].getSmallerOffset.dx.toInt() - offsets[x - 1].getSmallerOffset.dx.toInt();
-        int b = offsets[x].getSmallerOffset.dy.toInt() - offsets[x - 1].getSmallerOffset.dy.toInt();
+        int a = offsets[x].getSmallerOffset.dx.toInt() -
+            offsets[x - 1].getSmallerOffset.dx.toInt();
+        int b = offsets[x].getSmallerOffset.dy.toInt() -
+            offsets[x - 1].getSmallerOffset.dy.toInt();
 
         if (a.abs() - b.abs() != 0) {
           return false;
@@ -195,7 +204,8 @@ class CrosswordState extends State<Crossword> with SingleTickerProviderStateMixi
   ///generate random colors based on the give line colors
   List<Color> generateRandomColors() {
     Random random = Random();
-    int index = random.nextInt(widget.lineDecoration!.lineGradientColors.length);
+    int index =
+        random.nextInt(widget.lineDecoration!.lineGradientColors.length);
     return widget.lineDecoration!.lineGradientColors[index];
   }
 
@@ -203,9 +213,6 @@ class CrosswordState extends State<Crossword> with SingleTickerProviderStateMixi
   Widget build(BuildContext context) {
     return Column(
       children: [
-        SizedBox(
-          height: widget.sizedBoxHeightOnTop,
-        ),
         Expanded(
           child: Center(
             child: GestureDetector(
@@ -213,8 +220,10 @@ class CrosswordState extends State<Crossword> with SingleTickerProviderStateMixi
                 colors = generateRandomColors();
 
                 setState(() {
-                  startPoint = LetterOffset(offset: details.localPosition, spacing: widget.spacing);
-                  endPoint = LetterOffset(offset: details.localPosition, spacing: widget.spacing);
+                  startPoint = LetterOffset(
+                      offset: details.localPosition, spacing: widget.spacing);
+                  endPoint = LetterOffset(
+                      offset: details.localPosition, spacing: widget.spacing);
                   lineList.add(WordLine(
                     offsets: [startPoint!, endPoint!],
                     colors: colors,
@@ -242,16 +251,30 @@ class CrosswordState extends State<Crossword> with SingleTickerProviderStateMixi
 
                   ///Use a custom class to get suitable conversions
                   LetterOffset c = LetterOffset(
-                      offset: Offset(startPoint!.offset.dx + restrictedDx, startPoint!.offset.dy + restrictedDy),
+                      offset: Offset(startPoint!.offset.dx + restrictedDx,
+                          startPoint!.offset.dy + restrictedDy),
                       spacing: widget.spacing);
 
-                  bool isH = ((widget.drawHorizontalLine ?? true) ? isHorizontalLine(lineList.last.offsets) : false);
-                  bool isV = ((widget.drawVerticalLine ?? true) ? isVerticalLine(lineList.last.offsets) : false);
-                  bool isC = ((widget.drawCrossLine ?? true) ? isCrossLine(lineList.last.offsets) : false);
+                  bool isH = ((widget.drawHorizontalLine ?? true)
+                      ? isHorizontalLine(lineList.last.offsets)
+                      : false);
+                  bool isV = ((widget.drawVerticalLine ?? true)
+                      ? isVerticalLine(lineList.last.offsets)
+                      : false);
+                  bool isC = ((widget.drawCrossLine ?? true)
+                      ? isCrossLine(lineList.last.offsets)
+                      : false);
                   List<Offset> usedOffsets = lineList.last.getTotalOffsets;
                   bool allowOverlap = ((widget.allowOverlap ?? false) ||
-                          selectedOffsets.toSet().intersection(usedOffsets.toSet()).isEmpty) &&
-                      lineList.last.offsets.map((e) => e.getSmallerOffset).toSet().length > 1;
+                          selectedOffsets
+                              .toSet()
+                              .intersection(usedOffsets.toSet())
+                              .isEmpty) &&
+                      lineList.last.offsets
+                              .map((e) => e.getSmallerOffset)
+                              .toSet()
+                              .length >
+                          1;
 
                   ///line can only be drawn by touching inside the panel
                   if (isWithinLimit(c)) {
@@ -263,12 +286,15 @@ class CrosswordState extends State<Crossword> with SingleTickerProviderStateMixi
                       acceptReversedDirection: widget.acceptReversedDirection!,
                     );
 
-                    if (isC == false && isH == false && isV == false || allowOverlap == false) {
+                    if (isC == false && isH == false && isV == false ||
+                        allowOverlap == false) {
                       lineList.last = WordLine(
                         offsets: [startPoint!, endPoint!],
-                        colors: widget.invalidLineColors ?? [Colors.red.withOpacity(.2)],
+                        colors: widget.invalidLineColors ??
+                            [Colors.red.withOpacity(.2)],
                         letters: letters,
-                        acceptReversedDirection: widget.acceptReversedDirection!,
+                        acceptReversedDirection:
+                            widget.acceptReversedDirection!,
                       );
                       if (widget.onLineUpdate != null) {
                         if (lineList.isNotEmpty) {
@@ -293,22 +319,40 @@ class CrosswordState extends State<Crossword> with SingleTickerProviderStateMixi
                 setState(() {
                   ///Check if the line can be drawn on specific angles
                   if (((widget.allowOverlap ?? false) ||
-                          selectedOffsets.toSet().intersection(usedOffsets.toSet()).isEmpty) &&
-                      lineList.last.offsets.map((e) => e.getSmallerOffset).toSet().length > 1 &&
-                      (((widget.drawHorizontalLine ?? true) ? isHorizontalLine(lineList.last.offsets) : false) ||
-                          ((widget.drawVerticalLine ?? true) ? isVerticalLine(lineList.last.offsets) : false) ||
-                          ((widget.drawCrossLine ?? true) ? isCrossLine(lineList.last.offsets) : false))) {
+                          selectedOffsets
+                              .toSet()
+                              .intersection(usedOffsets.toSet())
+                              .isEmpty) &&
+                      lineList.last.offsets
+                              .map((e) => e.getSmallerOffset)
+                              .toSet()
+                              .length >
+                          1 &&
+                      (((widget.drawHorizontalLine ?? true)
+                              ? isHorizontalLine(lineList.last.offsets)
+                              : false) ||
+                          ((widget.drawVerticalLine ?? true)
+                              ? isVerticalLine(lineList.last.offsets)
+                              : false) ||
+                          ((widget.drawCrossLine ?? true)
+                              ? isCrossLine(lineList.last.offsets)
+                              : false))) {
                     selectedOffsets.addAll(usedOffsets);
                     if (widget.hints.contains(lineList.last.word)) {
-                      if (widget.lineDecoration!.correctGradientColors != null) {
+                      if (widget.lineDecoration!.correctGradientColors !=
+                          null) {
                         ///set a line color when the selected word is correct
-                        lineList.last.colors = widget.lineDecoration!.correctGradientColors ?? colors;
+                        lineList.last.colors =
+                            widget.lineDecoration!.correctGradientColors ??
+                                colors;
                       }
                     } else {
                       if (widget.addIncorrectWord ?? true) {
-                        if (widget.lineDecoration!.incorrectGradientColors != null) {
+                        if (widget.lineDecoration!.incorrectGradientColors !=
+                            null) {
                           ///set a line color when the selected word is incorrect
-                          lineList.last.colors = widget.lineDecoration!.incorrectGradientColors!;
+                          lineList.last.colors =
+                              widget.lineDecoration!.incorrectGradientColors!;
                         }
                       } else {
                         lineList.removeLast();
@@ -340,7 +384,8 @@ class CrosswordState extends State<Crossword> with SingleTickerProviderStateMixi
                         textStyle: widget.textStyle,
                         spacing: widget.spacing,
                         hints: widget.hints),
-                    size: Size(letters.length * widget.spacing.dx, letters.first.length * widget.spacing.dy),
+                    size: Size(letters.length * widget.spacing.dx,
+                        letters.first.length * widget.spacing.dy),
                   );
                 },
               ),

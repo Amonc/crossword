@@ -81,7 +81,8 @@ class _GamePageState extends State<GamePage> {
               ),
               Expanded(
                 child: Crossword(
-                  revealLetterDecoration: const RevealLetterDecoration(),
+                  revealLetterDecoration:
+                      const RevealLetterDecoration(shakeOffset: Offset(10, 20)),
                   key: crosswordState,
                   letters: const [
                     [
