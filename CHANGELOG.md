@@ -1,3 +1,7 @@
+## 1.0.1
+
+* Some bug fixes and improvements
+
 ## 1.0.0
 
 * Added invalid line colors

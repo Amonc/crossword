@@ -1,4 +1,4 @@
-# NEW:  Gradient Colors, TextStyles and Line Decoration updated to the Crossword Widget
+# NEW:  Reveal Letter animation, OnUpdate line function, Gradient Colors, TextStyles and Line Decoration updated to the Crossword Widget
 
 # Crossword [![pub package](https://img.shields.io/pub/v/crossword.svg)](https://pub.dartlang.org/packages/crossword)
 
@@ -47,7 +47,7 @@ a [dependency in your pubspec.yaml file](https://flutter.io/using-packages/).
 
 ```yaml
 dependencies:
-  crossword: ^1.0.0
+  crossword: ^1.0.1
 ```
 
 Import the package in your Dart code and instantiate the `Crossword` widget.
