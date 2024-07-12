@@ -3,6 +3,7 @@ import 'package:crossword/components/word_line.dart';
 import 'package:flutter/material.dart';
 
 class LinePainter extends CustomPainter {
+  final List<WordLine>? initialLineList;
   final List<WordLine> lineList;
   final List<List<String>> letters;
   final Offset spacing;
@@ -15,6 +16,7 @@ class LinePainter extends CustomPainter {
   final LineDecoration? lineDecoration;
 
   LinePainter({
+    this.initialLineList,
     this.textStyle = const TextStyle(color: Colors.black, fontSize: 16),
     this.lineDecoration,
     required this.shakeAnimationValue,

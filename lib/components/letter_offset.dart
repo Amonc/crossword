@@ -22,4 +22,13 @@ class LetterOffset {
     return Offset(smallOffset.dx * spacing.dx + spacing.dx / 2,
         smallOffset.dy * spacing.dy + spacing.dy / 2);
   }
+
+  //factory fromSmallerOffset(Offset offset, Offset spacing)
+
+  factory LetterOffset.fromSmallerOffsets(Offset offset, Offset spacing) {
+    return LetterOffset(
+      offset: Offset(offset.dx * spacing.dx, offset.dy * spacing.dy),
+      spacing: spacing,
+    );
+  }
 }

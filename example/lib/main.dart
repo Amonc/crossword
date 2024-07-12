@@ -1,5 +1,6 @@
 import 'dart:math';
 
+import 'package:crossword/components/line_offset.dart';
 import 'package:crossword/crossword.dart';
 import 'package:flutter/material.dart';
 
@@ -84,6 +85,7 @@ class _GamePageState extends State<GamePage> {
                   revealLetterDecoration:
                       const RevealLetterDecoration(shakeOffset: Offset(10, 20)),
                   key: crosswordState,
+                  allowOverlap: false,
                   letters: const [
                     [
                       "F",
@@ -234,6 +236,10 @@ class _GamePageState extends State<GamePage> {
                       this.word = word;
                     });
                   },
+                  initialLineList: const [
+                    LineOffset(start: Offset(1, 1), end: Offset(2, 1)),
+                    LineOffset(start: Offset(0, 0), end: Offset(6, 0)),
+                  ],
                   textStyle: const TextStyle(
                       color: Colors.blue,
                       fontSize: 16,
