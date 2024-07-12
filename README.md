@@ -47,7 +47,7 @@ a [dependency in your pubspec.yaml file](https://flutter.io/using-packages/).
 
 ```yaml
 dependencies:
-  crossword: ^1.0.1
+  crossword: ^1.1.0
 ```
 
 Import the package in your Dart code and instantiate the `Crossword` widget.
@@ -97,6 +97,8 @@ Crossword(
 
 ## Additional parameters
 
+- `initialLineList`: Accepts a `List` of `LineOffset` to add initial lines to the crossword 
+--  A `LineOffset` is a class that takes the `start` and `end` positions of the line
 - `acceptReversedDirection`: accepts a `bool` to identify while creating the words by touching in
   the reversed direction, is enabled or not
 - `drawCrossLine`:  accepts a `bool`, and identifies if the user can interact in the `Cross`

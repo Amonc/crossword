@@ -1,3 +1,8 @@
+## 1.1.0
+
+* Added initialLineList to add initial lines to the crossword
+* Some bug fixes and improvements
+
 ## 1.0.1
 
 * Some bug fixes and improvements

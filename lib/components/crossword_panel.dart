@@ -1,6 +1,5 @@
 import 'dart:math';
 
-import 'package:crossword/components/line_offset.dart';
 import 'package:crossword/crossword.dart';
 import 'package:flutter/material.dart';
 
