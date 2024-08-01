@@ -80,6 +80,11 @@ class _GamePageState extends State<GamePage> {
               ),
               Expanded(
                 child: Crossword(
+                  letterPopDecoration: const LetterPopDecoration(
+                    onTouchPopScaleFactor: 1.5,
+                    duration: Duration(milliseconds: 200),
+                    onTouchLetterFontStyle: FontStyle.italic,
+                  ),
                   revealLetterDecoration:
                       const RevealLetterDecoration(shakeOffset: Offset(10, 20)),
                   key: crosswordState,

@@ -1,3 +1,8 @@
+## 1.2.0
+
+* Letter Pop Animation added
+* Some bug fixes and improvements
+
 ## 1.1.0
 
 * Added initialLineList to add initial lines to the crossword

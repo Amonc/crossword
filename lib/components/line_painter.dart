@@ -1,3 +1,4 @@
+import 'package:crossword/components/letter_pop_decoration.dart';
 import 'package:crossword/components/line_decoration.dart';
 import 'package:crossword/components/word_line.dart';
 import 'package:flutter/material.dart';
@@ -12,22 +13,29 @@ class LinePainter extends CustomPainter {
   final TextStyle? textStyle;
   final Offset shakeAnimationValue;
   final double scaleAnimationValue;
+  final double popAnimationValue;
   final Offset? revealLetterPositions;
   final LineDecoration? lineDecoration;
+  final Offset? currentOffset;
+  final bool onTouchRotateLetter;
+  final LetterPopDecoration letterPopDecoration;
 
-  LinePainter({
-    this.initialLineList,
-    this.textStyle = const TextStyle(color: Colors.black, fontSize: 16),
-    this.lineDecoration,
-    required this.shakeAnimationValue,
-    required this.scaleAnimationValue,
-    required this.letters,
-    required this.lineList,
-    required this.spacing,
-    required this.hints,
-    this.revealLetterPositions,
-    this.correctColor = Colors.green,
-  });
+  LinePainter(
+      {this.initialLineList,
+      this.textStyle = const TextStyle(color: Colors.black, fontSize: 16),
+      this.lineDecoration,
+      required this.shakeAnimationValue,
+      required this.scaleAnimationValue,
+      required this.popAnimationValue,
+      required this.letters,
+      required this.lineList,
+      required this.spacing,
+      required this.hints,
+      this.revealLetterPositions,
+      this.onTouchRotateLetter = true,
+      this.correctColor = Colors.green,
+      this.currentOffset,
+      this.letterPopDecoration = const LetterPopDecoration()});
 
   @override
   void paint(Canvas canvas, Size size) {
@@ -72,7 +80,12 @@ class LinePainter extends CustomPainter {
         double y = j.toDouble() * spacing.dy + spacing.dy / 2;
 
         Offset offset = Offset(i.toDouble(), j.toDouble());
-
+        double sizeFactor = 1;
+        if (offset == currentOffset) {
+          sizeFactor = popAnimationValue;
+        } else {
+          sizeFactor = 1;
+        }
         bool within = withinOffset(offsets, offset);
 
         /// Draw letters
@@ -87,7 +100,18 @@ class LinePainter extends CustomPainter {
                     fontSize:
                         ((within ? lineDecoration?.lineTextStyle : textStyle)
                                 ?.fontSize)! *
-                            (reveal ? scaleAnimationValue : 1)),
+                            sizeFactor *
+                            (reveal ? scaleAnimationValue : 1))
+                .copyWith(
+                    fontStyle: offset == currentOffset && popAnimationValue != 1
+                        ? letterPopDecoration.onTouchLetterFontStyle
+                        : FontStyle.normal,
+
+
+                    fontWeight: offset == currentOffset && popAnimationValue != 1
+                        ? letterPopDecoration.onTouchLetterFontWeight
+                        : textStyle?.fontWeight,
+            ),
           ),
           textDirection: TextDirection.ltr,
           textAlign: TextAlign.center,

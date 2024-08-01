@@ -23,6 +23,7 @@ class Crossword extends StatefulWidget {
   final bool? updateStateWithParent;
   final List<LineOffset> initialLineList;
   final int minimumWordLength;
+  final LetterPopDecoration letterPopDecoration;
 
   final RevealLetterDecoration? revealLetterDecoration;
 
@@ -48,6 +49,7 @@ class Crossword extends StatefulWidget {
         shakeOffset: Offset(20, 50), scaleFactor: 2),
     this.updateStateWithParent = false,
     this.minimumWordLength = 3,
+    this.letterPopDecoration = const LetterPopDecoration(),
   }) : assert(
           (drawCrossLine ?? true) ||
               (drawHorizontalLine ?? true) ||
@@ -60,8 +62,7 @@ class Crossword extends StatefulWidget {
 }
 
 /// State class for the Crossword widget.
-class CrosswordState extends State<Crossword>
-    with SingleTickerProviderStateMixin {
+class CrosswordState extends State<Crossword> with TickerProviderStateMixin {
   List<WordLine> lineList = [];
   List<Offset> selectedOffsets = [];
   List<Color> colors = [];
@@ -70,9 +71,13 @@ class CrosswordState extends State<Crossword>
   LetterOffset? startPoint;
   LetterOffset? endPoint;
   List<List<String>> letters = [];
-  late AnimationController _controller;
+  late AnimationController _revealHintAnimationController;
   late Animation<Offset> _shakeAnimation;
   late Animation<double> _scaleAnimation;
+  Offset? currentOffset;
+
+  late AnimationController _popAnimationController;
+  late Animation<double> _popAnimation;
 
   @override
   void initState() {
@@ -83,7 +88,7 @@ class CrosswordState extends State<Crossword>
     setupInitialLines();
 
     ///initialize the animation controller
-    _controller = AnimationController(
+    _revealHintAnimationController = AnimationController(
       duration: widget.revealLetterDecoration!.animationDuration,
       vsync: this,
     );
@@ -92,7 +97,7 @@ class CrosswordState extends State<Crossword>
     _shakeAnimation = Tween<Offset>(
             begin: Offset.zero, end: widget.revealLetterDecoration!.shakeOffset)
         .chain(CurveTween(curve: widget.revealLetterDecoration!.shakeCurve))
-        .animate(_controller);
+        .animate(_revealHintAnimationController);
 
     ///set the scale animation
     _scaleAnimation = Tween<double>(
@@ -100,7 +105,17 @@ class CrosswordState extends State<Crossword>
       end: widget.revealLetterDecoration!.scaleFactor,
     )
         .chain(CurveTween(curve: widget.revealLetterDecoration!.scaleCurve))
-        .animate(_controller);
+        .animate(_revealHintAnimationController);
+
+    _popAnimationController = AnimationController(
+      vsync: this,
+      duration: widget.letterPopDecoration.duration,
+    )..repeat(reverse: true);
+
+    _popAnimation = Tween<double>(
+            begin: 1, end: widget.letterPopDecoration.onTouchPopScaleFactor)
+        .chain(CurveTween(curve: widget.letterPopDecoration.curve))
+        .animate(_popAnimationController);
   }
 
   Offset revealLetterPositions = const Offset(0, 0);
@@ -109,12 +124,14 @@ class CrosswordState extends State<Crossword>
   animate({required Offset offset}) {
     revealLetterPositions = offset;
     setState(() {});
-    _controller.forward().then((value) => _controller.reverse());
+    _revealHintAnimationController
+        .forward()
+        .then((value) => _revealHintAnimationController.reverse());
   }
 
   @override
   void dispose() {
-    _controller.dispose();
+    _revealHintAnimationController.dispose();
     super.dispose();
   }
 
@@ -257,6 +274,13 @@ class CrosswordState extends State<Crossword>
                           startPoint!.offset.dy + restrictedDy),
                       spacing: widget.spacing);
 
+                  if (currentOffset != c.getSmallerOffset) {
+                    currentOffset = c.getSmallerOffset;
+                    _popAnimationController
+                        .forward()
+                        .then((value) => _popAnimationController.reverse());
+                  }
+
                   ///line can only be drawn by touching inside the panel
                   if (isWithinLimit(c)) {
                     endPoint = c;
@@ -363,22 +387,29 @@ class CrosswordState extends State<Crossword>
                 });
               },
               child: AnimatedBuilder(
-                animation: _controller,
+                animation: _popAnimationController,
                 builder: (BuildContext context, Widget? child) {
-                  return CustomPaint(
-                    ///paints lines on the screen
-                    painter: LinePainter(
-                        revealLetterPositions: revealLetterPositions,
-                        scaleAnimationValue: _scaleAnimation.value,
-                        shakeAnimationValue: _shakeAnimation.value,
-                        lineDecoration: widget.lineDecoration,
-                        letters: letters,
-                        lineList: lineList,
-                        textStyle: widget.textStyle,
-                        spacing: widget.spacing,
-                        hints: widget.hints),
-                    size: Size(letters.length * widget.spacing.dx,
-                        letters.first.length * widget.spacing.dy),
+                  return AnimatedBuilder(
+                    animation: _revealHintAnimationController,
+                    builder: (BuildContext context, Widget? child) {
+                      return CustomPaint(
+                        ///paints lines on the screen
+                        painter: LinePainter(
+                            currentOffset: currentOffset,
+                            revealLetterPositions: revealLetterPositions,
+                            popAnimationValue: _popAnimation.value,
+                            scaleAnimationValue: _scaleAnimation.value,
+                            shakeAnimationValue: _shakeAnimation.value,
+                            lineDecoration: widget.lineDecoration,
+                            letters: letters,
+                            lineList: lineList,
+                            textStyle: widget.textStyle,
+                            spacing: widget.spacing,
+                            hints: widget.hints),
+                        size: Size(letters.length * widget.spacing.dx,
+                            letters.first.length * widget.spacing.dy),
+                      );
+                    },
                   );
                 },
               ),

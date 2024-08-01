@@ -1,5 +1,4 @@
-# NEW:  Reveal Letter animation, OnUpdate line function, Gradient Colors, TextStyles and Line Decoration updated to the Crossword Widget
-
+# NEW:  LetterPop Animation
 # Crossword [![pub package](https://img.shields.io/pub/v/crossword.svg)](https://pub.dartlang.org/packages/crossword)
 
 <br>
@@ -47,7 +46,7 @@ a [dependency in your pubspec.yaml file](https://flutter.io/using-packages/).
 
 ```yaml
 dependencies:
-  crossword: ^1.1.0
+  crossword: ^1.2.0
 ```
 
 Import the package in your Dart code and instantiate the `Crossword` widget.
@@ -151,6 +150,7 @@ final GlobalKey<CrosswordState> _crosswordState = GlobalKey();
 - `revealLetterDecoration`: Accepts a `RevealLetterDecoration` to animate the decoration of the
   letters 
 
+- 'letterPopDecoration': Accepts a `LetterPopDecoration` to animate the decoration of the specific letter onTouchEvent
 
 ## Contributions
 
