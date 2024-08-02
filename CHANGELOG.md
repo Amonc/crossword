@@ -1,5 +1,10 @@
 ## 1.2.0
 
+* Updated onLineUpdated for better performance
+* Some bug fixes and improvements
+
+## 1.2.0
+
 * Letter Pop Animation added
 * Some bug fixes and improvements
 

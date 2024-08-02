@@ -14,8 +14,7 @@ class Crossword extends StatefulWidget {
   final bool? drawCrossLine;
   final bool? drawHorizontalLine;
   final bool? drawVerticalLine;
-  final Function(List<String> words) onLineDrawn;
-  final Function(String word)? onLineUpdate;
+  final Function(String word, List<String>, bool)? onLineUpdate;
   final List<String> hints;
   final TextStyle? textStyle;
   final bool? acceptReversedDirection;
@@ -32,7 +31,6 @@ class Crossword extends StatefulWidget {
     required this.letters,
     required this.spacing,
     this.drawCrossLine,
-    required this.onLineDrawn,
     this.drawHorizontalLine,
     this.drawVerticalLine,
     required this.hints,
@@ -78,6 +76,9 @@ class CrosswordState extends State<Crossword> with TickerProviderStateMixin {
 
   late AnimationController _popAnimationController;
   late Animation<double> _popAnimation;
+
+  List<String> _words = [];
+  String _word = "";
 
   @override
   void initState() {
@@ -279,51 +280,48 @@ class CrosswordState extends State<Crossword> with TickerProviderStateMixin {
                     _popAnimationController
                         .forward()
                         .then((value) => _popAnimationController.reverse());
-                  }
-
-                  ///line can only be drawn by touching inside the panel
-                  if (isWithinLimit(c)) {
-                    endPoint = c;
-                    WordLine wordLine = WordLine(
-                      offsets: [startPoint!, endPoint!],
-                      colors: colors,
-                      letters: letters,
-                      acceptReversedDirection: widget.acceptReversedDirection!,
-                    );
-
-                    lineList.last = wordLine;
-
-                    bool isH = ((widget.drawHorizontalLine ?? true)
-                        ? isHorizontalLine(lineList.last.offsets)
-                        : false);
-                    bool isV = ((widget.drawVerticalLine ?? true)
-                        ? isVerticalLine(lineList.last.offsets)
-                        : false);
-                    bool isC = ((widget.drawCrossLine ?? true)
-                        ? isCrossLine(lineList.last.offsets)
-                        : false);
-                    if (isC == false && isH == false && isV == false) {
-                      lineList.last = WordLine(
+                    if (isWithinLimit(c)) {
+                      endPoint = c;
+                      WordLine wordLine = WordLine(
                         offsets: [startPoint!, endPoint!],
-                        colors: widget.invalidLineColors ??
-                            [Colors.red.withOpacity(.2)],
+                        colors: colors,
                         letters: letters,
                         acceptReversedDirection:
                             widget.acceptReversedDirection!,
                       );
+                      _word = wordLine.word;
                       if (widget.onLineUpdate != null) {
-                        if (lineList.isNotEmpty) {
-                          widget.onLineUpdate!("");
-                        }
+                        widget.onLineUpdate!(_word, _words, false);
                       }
-                    } else {
-                      if (widget.onLineUpdate != null) {
+                      lineList.last = wordLine;
+
+                      bool isH = ((widget.drawHorizontalLine ?? true)
+                          ? isHorizontalLine(lineList.last.offsets)
+                          : false);
+                      bool isV = ((widget.drawVerticalLine ?? true)
+                          ? isVerticalLine(lineList.last.offsets)
+                          : false);
+                      bool isC = ((widget.drawCrossLine ?? true)
+                          ? isCrossLine(lineList.last.offsets)
+                          : false);
+                      if (isC == false && isH == false && isV == false) {
+                        lineList.last = WordLine(
+                          offsets: [startPoint!, endPoint!],
+                          colors: widget.invalidLineColors ??
+                              [Colors.red.withOpacity(.2)],
+                          letters: letters,
+                          acceptReversedDirection:
+                              widget.acceptReversedDirection!,
+                        );
+
                         if (lineList.isNotEmpty) {
-                          widget.onLineUpdate!(lineList.last.word);
+                          _word = "";
                         }
-                      }
+                      } else {}
                     }
                   }
+
+                  ///line can only be drawn by touching inside the panel
                 });
               },
               onPanEnd: (DragEndDetails details) async {
@@ -355,6 +353,8 @@ class CrosswordState extends State<Crossword> with TickerProviderStateMixin {
                               ? isCrossLine(lineList.last.offsets)
                               : false))) {
                     selectedOffsets.addAll(usedOffsets);
+                    _word = lineList.last.word;
+
                     if (widget.hints.contains(lineList.last.word)) {
                       if (widget.lineDecoration!.correctGradientColors !=
                           null) {
@@ -370,15 +370,13 @@ class CrosswordState extends State<Crossword> with TickerProviderStateMixin {
                           ///set a line color when the selected word is incorrect
                           lineList.last.colors =
                               widget.lineDecoration!.incorrectGradientColors!;
+                          _words = lineList.map((e) => e.word).toList();
+                          widget.onLineUpdate!(_word, _words, true);
                         }
                       } else {
                         lineList.removeLast();
                       }
                     }
-
-                    ///return a list of word
-
-                    widget.onLineDrawn(lineList.map((e) => e.word).toList());
                   } else {
                     startPoint = null;
                     endPoint = null;

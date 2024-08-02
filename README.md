@@ -46,7 +46,7 @@ a [dependency in your pubspec.yaml file](https://flutter.io/using-packages/).
 
 ```yaml
 dependencies:
-  crossword: ^1.2.0
+  crossword: ^1.3.0
 ```
 
 Import the package in your Dart code and instantiate the `Crossword` widget.
