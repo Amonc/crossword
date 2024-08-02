@@ -235,8 +235,12 @@ class _GamePageState extends State<GamePage> {
                   spacing: const Offset(30, 30),
                   onLineUpdate: (String word, List<String> words, isLineDrawn) {
                     if (isLineDrawn) {
-                    } else {}
+                      print(words);
+                    } else {
+                      print(word);
+                    }
                   },
+                  addIncorrectWord: false,
                   textStyle: const TextStyle(
                       color: Colors.blue,
                       fontSize: 16,
@@ -253,7 +257,6 @@ class _GamePageState extends State<GamePage> {
                         Colors.green
                       ],
                     ],
-                    incorrectGradientColors: [Colors.red, Colors.black],
                     strokeWidth: 26,
                     lineTextStyle: TextStyle(
                         color: Colors.white,

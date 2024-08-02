@@ -1,4 +1,4 @@
-## 1.2.0
+## 1.3.1
 
 * Updated onLineUpdated for better performance
 * Some bug fixes and improvements

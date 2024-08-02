@@ -46,7 +46,7 @@ a [dependency in your pubspec.yaml file](https://flutter.io/using-packages/).
 
 ```yaml
 dependencies:
-  crossword: ^1.3.0
+  crossword: ^1.3.1
 ```
 
 Import the package in your Dart code and instantiate the `Crossword` widget.
@@ -57,7 +57,6 @@ To get started add the `Crossword` widget.
 
 - `letters` : takes all the letters as a two-dimentional `List`
 - `spacing` : controls the `horizontal` and `vertical` spacing in between letters
-- `onLineDrawn` : returns a `List` of words created based on user interactions on
   the `Crossword panel`
 - `hints` : takes a `List` of words as clues
 

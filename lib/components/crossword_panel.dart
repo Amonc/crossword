@@ -363,6 +363,8 @@ class CrosswordState extends State<Crossword> with TickerProviderStateMixin {
                             widget.lineDecoration!.correctGradientColors ??
                                 colors;
                       }
+                      _words = lineList.map((e) => e.word).toList();
+                      widget.onLineUpdate!(_word, _words, true);
                     } else {
                       if (widget.addIncorrectWord ?? true) {
                         if (widget.lineDecoration!.incorrectGradientColors !=
@@ -370,10 +372,11 @@ class CrosswordState extends State<Crossword> with TickerProviderStateMixin {
                           ///set a line color when the selected word is incorrect
                           lineList.last.colors =
                               widget.lineDecoration!.incorrectGradientColors!;
-                          _words = lineList.map((e) => e.word).toList();
-                          widget.onLineUpdate!(_word, _words, true);
                         }
+                        _words = lineList.map((e) => e.word).toList();
+                        widget.onLineUpdate!(_word, _words, true);
                       } else {
+                        widget.onLineUpdate!(_word, _words, false);
                         lineList.removeLast();
                       }
                     }
