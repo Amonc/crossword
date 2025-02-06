@@ -103,15 +103,13 @@ class LinePainter extends CustomPainter {
                             sizeFactor *
                             (reveal ? scaleAnimationValue : 1))
                 .copyWith(
-                    fontStyle: offset == currentOffset && popAnimationValue != 1
-                        ? letterPopDecoration.onTouchLetterFontStyle
-                        : FontStyle.normal,
-
-
-                    fontWeight: offset == currentOffset && popAnimationValue != 1
-                        ? letterPopDecoration.onTouchLetterFontWeight
-                        : textStyle?.fontWeight,
-            ),
+                  fontStyle: offset == currentOffset && popAnimationValue != 1
+                      ? letterPopDecoration.onTouchLetterFontStyle
+                      : FontStyle.normal,
+                  fontWeight: offset == currentOffset && popAnimationValue != 1
+                      ? letterPopDecoration.onTouchLetterFontWeight
+                      : textStyle?.fontWeight,
+                ),
           ),
           textDirection: TextDirection.ltr,
           textAlign: TextAlign.center,
