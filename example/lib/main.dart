@@ -235,9 +235,9 @@ class _GamePageState extends State<GamePage> {
                   spacing: const Offset(30, 30),
                   onLineUpdate: (String word, List<String> words, isLineDrawn) {
                     if (isLineDrawn) {
-                      print(words);
+
                     } else {
-                      print(word);
+
                     }
                   },
                   addIncorrectWord: false,
@@ -263,7 +263,7 @@ class _GamePageState extends State<GamePage> {
                         fontSize: 16,
                         fontWeight: FontWeight.bold),
                   ),
-                  hints: const ["FLUTTER", "GAMES", "UI", "COLORS"],
+                  hints: const ["FLUTTER", "GAMES", "UI", "COLOR"],
                 ),
               ),
               ElevatedButton(

@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 
 /// Represents a widget for a crossword game board.
 class Crossword extends StatefulWidget {
+  /// decides the incorrect words to be added to the list or not
   final bool? addIncorrectWord;
   final List<List<String>> letters;
   final bool? transposeMatrix;
@@ -17,7 +18,11 @@ class Crossword extends StatefulWidget {
   final Function(String word, List<String>, bool)? onLineUpdate;
   final List<String> hints;
   final TextStyle? textStyle;
+
+  ///it is used to determine whether the line can be drawn in the opposite direction
   final bool? acceptReversedDirection;
+
+  ///it is used to determine whether the line can be drawn on top of another line
   final bool? allowOverlap;
   final bool? updateStateWithParent;
   final List<LineOffset> initialLineList;
@@ -133,6 +138,7 @@ class CrosswordState extends State<Crossword> with TickerProviderStateMixin {
   @override
   void dispose() {
     _revealHintAnimationController.dispose();
+    _popAnimationController.dispose();
     super.dispose();
   }
 
@@ -308,7 +314,7 @@ class CrosswordState extends State<Crossword> with TickerProviderStateMixin {
                         lineList.last = WordLine(
                           offsets: [startPoint!, endPoint!],
                           colors: widget.invalidLineColors ??
-                              [Colors.red.withOpacity(.2)],
+                              [Colors.red.withAlpha(100)],
                           letters: letters,
                           acceptReversedDirection:
                               widget.acceptReversedDirection!,
@@ -327,16 +333,16 @@ class CrosswordState extends State<Crossword> with TickerProviderStateMixin {
               onPanEnd: (DragEndDetails details) async {
                 ///get the last line drawn from the list
                 bool isOverlapped;
-                List<Offset> usedOffsets;
+                List<Offset> lastUsedOffsets;
                 if (lineList.isNotEmpty) {
-                  usedOffsets = lineList.last.getTotalOffsets;
+                  lastUsedOffsets = lineList.last.getTotalOffsets;
                   isOverlapped = ((selectedOffsets
                       .toSet()
-                      .intersection(usedOffsets.toSet())
+                      .intersection(lastUsedOffsets.toSet())
                       .isNotEmpty));
                 } else {
                   isOverlapped = false;
-                  usedOffsets = [];
+                  lastUsedOffsets = [];
                 }
 
                 setState(() {
@@ -352,10 +358,10 @@ class CrosswordState extends State<Crossword> with TickerProviderStateMixin {
                           ((widget.drawCrossLine ?? true)
                               ? isCrossLine(lineList.last.offsets)
                               : false))) {
-                    selectedOffsets.addAll(usedOffsets);
                     _word = lineList.last.word;
 
                     if (widget.hints.contains(lineList.last.word)) {
+                      selectedOffsets.addAll(lastUsedOffsets);
                       if (widget.lineDecoration!.correctGradientColors !=
                           null) {
                         ///set a line color when the selected word is correct
@@ -375,6 +381,7 @@ class CrosswordState extends State<Crossword> with TickerProviderStateMixin {
                         }
                         _words = lineList.map((e) => e.word).toList();
                         widget.onLineUpdate!(_word, _words, true);
+                        selectedOffsets.addAll(lastUsedOffsets);
                       } else {
                         widget.onLineUpdate!(_word, _words, false);
                         lineList.removeLast();

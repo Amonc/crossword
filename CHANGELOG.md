@@ -1,3 +1,8 @@
+## 1.3.2
+
+* Added PopLetter Animation to be disposed when required
+
+
 ## 1.3.1
 
 * Updated onLineUpdated for better performance
